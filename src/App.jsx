@@ -46,21 +46,26 @@ function Header() {
         <Link to="/" className="autoai-logo-link" onClick={closeDropdown}>
           <img src={logo} alt="AutoAI Logo" className="autoai-logo" />
         </Link>
-        <nav className="autoai-nav">
+        <nav className="autoai-nav" style={{ flex: 1 }}>
           <Link to="/" className="autoai-nav-btn" onClick={closeDropdown}>Home</Link>
           <div
             className="autoai-nav-dropdown"
             onMouseEnter={handleDropdownEnter}
             onMouseLeave={handleDropdownLeave}
           >
-            <button className="autoai-nav-btn autoai-nav-dropdown-btn" aria-haspopup="true" aria-expanded={dropdownOpen}>
+            <button
+              className="autoai-nav-btn autoai-nav-dropdown-btn"
+              aria-haspopup="true"
+              aria-expanded={dropdownOpen}
+              aria-controls="resources-menu"
+            >
               Resources <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} />
             </button>
             {dropdownOpen && (
-              <div className="autoai-dropdown-menu">
-                <Link to="/ai-strategy" className="autoai-dropdown-item" onClick={closeDropdown}>AI Strategy</Link>
-                <Link to="/data-strategy" className="autoai-dropdown-item" onClick={closeDropdown}>Data Strategy</Link>
-                <Link to="/comparison" className="autoai-dropdown-item" onClick={closeDropdown}>AI Comparison</Link>
+              <div className="autoai-dropdown-menu" id="resources-menu" role="menu">
+                <Link to="/ai-strategy" className="autoai-dropdown-item" onClick={closeDropdown} role="menuitem">AI Strategy</Link>
+                <Link to="/data-strategy" className="autoai-dropdown-item" onClick={closeDropdown} role="menuitem">Data Strategy</Link>
+                <Link to="/comparison" className="autoai-dropdown-item" onClick={closeDropdown} role="menuitem">AI Comparison</Link>
               </div>
             )}
           </div>
@@ -182,16 +187,36 @@ function AIAssessmentQuiz({ onClose }) {
 
 function Home() {
   const [showQuiz, setShowQuiz] = useState(false);
+  useEffect(() => {
+    const els = document.querySelectorAll('.fade-in-on-scroll');
+    const observer = new window.IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    els.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
   return (
     <>
       {/* Hero Section */}
-      <div className="autoai-hero">
-        <h1 className="autoai-hero-title">Empowering Car Dealerships to Choose the Right AI Solutions</h1>
-        <p className="autoai-hero-subtitle">Our automotive experts help dealers choose the right technology solutions</p>
-        <button className="autoai-hero-btn" onClick={() => setShowQuiz(true)}>
-          Start Your AI Assessment
-        </button>
-      </div>
+      <section className="hero-fullwidth-section">
+        <div className="hero-bcp-content">
+          <h1 className="hero-bcp-title fade-in-on-scroll">AI Insights. Human Intuition.<br/>Meet Your Growth Engine.</h1>
+          <p className="hero-bcp-subtitle fade-in-on-scroll">AutoAI Consult combines smart humans and AI-enabled technology to help dealers respond quickly and carefully. By any means—text, chat, email, or phone—even when you’re asleep.</p>
+          <div className="hero-bcp-cta-row fade-in-on-scroll">
+            <button className="autoai-hero-btn" onClick={() => setShowQuiz(true)}>
+              Start Your AI Assessment
+            </button>
+            <a href="#solutions" className="autoai-hero-btn secondary-cta">View Solutions</a>
+          </div>
+        </div>
+      </section>
       {showQuiz && <AIAssessmentQuiz onClose={() => setShowQuiz(false)} />}
       {/* About Us/Mission Section */}
       <div className="autoai-card autoai-about-hero">
