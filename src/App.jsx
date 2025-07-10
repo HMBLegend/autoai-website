@@ -1,8 +1,36 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import { FaChevronDown, FaRocket, FaCogs, FaLightbulb, FaUsers, FaUserTie, FaBrain, FaChartBar, FaDatabase, FaShieldAlt } from 'react-icons/fa';
+import { useState, useEffect, useRef } from 'react';
+import { FaChevronDown, FaRocket, FaCogs, FaLightbulb, FaUsers, FaUserTie, FaBrain, FaChartBar, FaDatabase, FaShieldAlt, FaEnvelope, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { FaRegClock, FaRegChartBar, FaProjectDiagram, FaChartLine } from 'react-icons/fa';
+import reactLogo from './assets/react.svg';
+import logo from '../images/1.png';
+import footerLogo from '../images/3.png';
+
+function AnimatedCounter({ end, duration = 1200, prefix = '', suffix = '', trigger }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef();
+  useEffect(() => {
+    if (!trigger) return;
+    console.log('AnimatedCounter triggered for', end);
+    let start = 0;
+    let startTime = null;
+    const animate = (timestamp) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const value = Math.floor(progress * (end - start) + start);
+      setCount(value);
+      if (progress < 1) {
+        ref.current = requestAnimationFrame(animate);
+      } else {
+        setCount(end);
+      }
+    };
+    ref.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(ref.current);
+  }, [end, duration, trigger]);
+  return <span>{prefix}{count.toLocaleString()}{suffix}</span>;
+}
 
 function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -14,191 +42,397 @@ function Header() {
 
   return (
     <header className="autoai-header">
-      <nav className="autoai-nav">
-        <Link to="/about" className="autoai-nav-btn" onClick={closeDropdown}>About Us</Link>
-        <div
-          className="autoai-nav-dropdown"
-          onMouseEnter={handleDropdownEnter}
-          onMouseLeave={handleDropdownLeave}
-        >
-          <button className="autoai-nav-btn autoai-nav-dropdown-btn" aria-haspopup="true" aria-expanded={dropdownOpen}>
-            Resources <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} />
-          </button>
-          {dropdownOpen && (
-            <div className="autoai-dropdown-menu">
-              <Link to="/ai-strategy" className="autoai-dropdown-item" onClick={closeDropdown}>AI Strategy</Link>
-              <Link to="/data-strategy" className="autoai-dropdown-item" onClick={closeDropdown}>Data Strategy</Link>
-            </div>
-          )}
-        </div>
-        <button className="autoai-nav-btn" onClick={() => { closeDropdown(); navigate('/#contact'); }}>Contact Us</button>
-      </nav>
+      <div className="autoai-header-inner">
+        <Link to="/" className="autoai-logo-link" onClick={closeDropdown}>
+          <img src={logo} alt="AutoAI Logo" className="autoai-logo" />
+        </Link>
+        <nav className="autoai-nav">
+          <Link to="/" className="autoai-nav-btn" onClick={closeDropdown}>Home</Link>
+          <div
+            className="autoai-nav-dropdown"
+            onMouseEnter={handleDropdownEnter}
+            onMouseLeave={handleDropdownLeave}
+          >
+            <button className="autoai-nav-btn autoai-nav-dropdown-btn" aria-haspopup="true" aria-expanded={dropdownOpen}>
+              Resources <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} />
+            </button>
+            {dropdownOpen && (
+              <div className="autoai-dropdown-menu">
+                <Link to="/ai-strategy" className="autoai-dropdown-item" onClick={closeDropdown}>AI Strategy</Link>
+                <Link to="/data-strategy" className="autoai-dropdown-item" onClick={closeDropdown}>Data Strategy</Link>
+                <Link to="/comparison" className="autoai-dropdown-item" onClick={closeDropdown}>AI Comparison</Link>
+              </div>
+            )}
+          </div>
+          <Link to="/contact" className="autoai-nav-btn" onClick={closeDropdown}>Contact Us</Link>
+        </nav>
+      </div>
     </header>
   );
 }
 
-function Home() {
-  return (
-    <div className="autoai-bg">
-      <main className="autoai-container">
-        <h1 className="autoai-title">AutoAI Consult</h1>
-        <p className="autoai-subtitle">Empowering Car Dealerships to Choose the Right AI Solutions</p>
-        <a href="#contact" className="autoai-contact-btn">Contact Us</a>
+function AIAssessmentQuiz({ onClose }) {
+  const [step, setStep] = useState(0);
+  const [answers, setAnswers] = useState({ size: '', pain: '', tech: '', goal: '' });
 
-        <section className="autoai-card">
-          <h2 className="autoai-section-title">About Us</h2>
+  const questions = [
+    {
+      label: 'How many vehicles does your dealership sell per month?',
+      name: 'size',
+      options: [
+        'Less than 50',
+        '50-150',
+        '150-300',
+        '300+',
+      ],
+    },
+    {
+      label: 'What is your biggest challenge right now?',
+      name: 'pain',
+      options: [
+        'Lead management',
+        'Inventory management',
+        'Customer follow-up',
+        'Staffing/training',
+        'Other',
+      ],
+    },
+    {
+      label: 'What is your current technology stack?',
+      name: 'tech',
+      options: [
+        'Mostly manual/spreadsheets',
+        'Basic CRM/DMS',
+        'Some automation/AI tools',
+        'Advanced AI/automation',
+      ],
+    },
+    {
+      label: 'What is your primary goal for AI adoption?',
+      name: 'goal',
+      options: [
+        'Increase sales',
+        'Improve efficiency',
+        'Enhance customer experience',
+        'Reduce costs',
+        'Other',
+      ],
+    },
+  ];
+
+  const handleSelect = (name, value) => {
+    setAnswers((prev) => ({ ...prev, [name]: value }));
+    setTimeout(() => setStep((s) => s + 1), 200);
+  };
+
+  const getScore = () => {
+    // Simple scoring: more advanced tech/size/goals = higher readiness
+    let score = 0;
+    if (answers.size === '300+') score += 2;
+    else if (answers.size === '150-300') score += 1;
+    if (answers.tech === 'Advanced AI/automation') score += 2;
+    else if (answers.tech === 'Some automation/AI tools') score += 1;
+    if (answers.goal === 'Increase sales' || answers.goal === 'Improve efficiency') score += 1;
+    return score;
+  };
+
+  if (step >= questions.length) {
+    const score = getScore();
+    let readiness = 'Basic';
+    if (score >= 4) readiness = 'Advanced';
+    else if (score >= 2) readiness = 'Intermediate';
+    return (
+      <div className="autoai-quiz-modal">
+        <div className="autoai-quiz-card">
+          <h2>Your AI Readiness: <span className="autoai-quiz-score">{readiness}</span></h2>
           <p>
-            At AutoAI Consult, we specialize in guiding car dealerships through the complex world of automotive AI. Whether you're considering solutions like <b>PAM AI</b>, <b>TOMA AI</b>, or other cutting-edge platforms, we help you make informed decisions that drive results.
+            {readiness === 'Advanced' && 'You are ready to implement advanced AI solutions!'}
+            {readiness === 'Intermediate' && 'You are on your way to AI adoption. Let’s discuss the best next steps for your dealership.'}
+            {readiness === 'Basic' && 'AI can help your dealership grow. Let’s explore the right starting point for you.'}
           </p>
-        </section>
+          <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Book a Free Consultation</a>
+          <button className="autoai-quiz-close" onClick={onClose}>Close</button>
+        </div>
+      </div>
+    );
+  }
 
-        <section className="autoai-card">
-          <h2 className="autoai-section-title">Our Services</h2>
-          <ul className="autoai-services-list">
-            <li><FaRegClock className="autoai-icon" /> AI Needs Assessment for Dealerships</li>
-            <li><FaRegChartBar className="autoai-icon" /> Comparative Analysis: PAM AI vs. TOMA AI and more</li>
-            <li><FaUserTie className="autoai-icon" /> Vendor Evaluation & Selection Guidance</li>
-            <li><FaProjectDiagram className="autoai-icon" /> Implementation Planning & Support</li>
-            <li><FaChartLine className="autoai-icon" /> Staff Training & Change Management</li>
-          </ul>
-        </section>
-
-        <section id="contact" className="autoai-card autoai-contact-section">
-          <h2 className="autoai-section-title">Contact Us</h2>
-          <p>Ready to find the perfect AI for your dealership?</p>
-          <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Email us at info@autoaiconsult.org</a>
-        </section>
-      </main>
+  const q = questions[step];
+  return (
+    <div className="autoai-quiz-modal">
+      <div className="autoai-quiz-card">
+        <h2>AI Needs Assessment</h2>
+        <p className="autoai-quiz-question">{q.label}</p>
+        <div className="autoai-quiz-options">
+          {q.options.map((opt) => (
+            <button
+              key={opt}
+              className={`autoai-quiz-option${answers[q.name] === opt ? ' selected' : ''}`}
+              onClick={() => handleSelect(q.name, opt)}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+        <button className="autoai-quiz-close" onClick={onClose}>Cancel</button>
+      </div>
     </div>
   );
 }
 
-function AboutUs() {
+function Home() {
+  const [showQuiz, setShowQuiz] = useState(false);
   return (
-    <div className="autoai-bg">
-      <main className="autoai-container">
-        {/* Hero Section */}
-        <section className="autoai-card autoai-about-hero">
-          <h1 className="autoai-title">Dealership success. Powered by people. Driven by AI-enabled tech.</h1>
-          <p className="autoai-subtitle">Empowering dealerships with digital solutions and expert guidance for the future of automotive sales and service.</p>
-        </section>
-
-        {/* Mission/Vision Section */}
-        <section className="autoai-card">
-          <h2 className="autoai-section-title">Our Mission</h2>
-          <p>
-            Our mission is to equip dealerships with digital solutions that streamline operations and enhance customer engagement. With a team that knows the ins and outs of the auto world and always has an eye on the next big thing in tech, we're the folks dealerships turn to when they're ready to step up their game.
-          </p>
-        </section>
-
-        {/* Key Stats Section */}
-        <section className="autoai-card autoai-about-stats">
-          <h2 className="autoai-section-title">Why Partner with AutoAI Consult?</h2>
-          <div className="autoai-about-stats-row">
-            <div className="autoai-about-stat"><FaRocket className="autoai-about-stat-icon" /><div className="autoai-about-stat-value">4,500+</div><div className="autoai-about-stat-label">Dealer Partners</div></div>
-            <div className="autoai-about-stat"><FaCogs className="autoai-about-stat-icon" /><div className="autoai-about-stat-value">$25B+</div><div className="autoai-about-stat-label">Sales Enabled</div></div>
-            <div className="autoai-about-stat"><FaLightbulb className="autoai-about-stat-icon" /><div className="autoai-about-stat-value">2M+</div><div className="autoai-about-stat-label">Service Appointments</div></div>
-            <div className="autoai-about-stat"><FaUsers className="autoai-about-stat-icon" /><div className="autoai-about-stat-value">23M+</div><div className="autoai-about-stat-label">Sales Leads Reviewed</div></div>
+    <>
+      {/* Hero Section */}
+      <div className="autoai-hero">
+        <h1 className="autoai-hero-title">Empowering Car Dealerships to Choose the Right AI Solutions</h1>
+        <p className="autoai-hero-subtitle">Our automotive experts help dealers choose the right technology solutions</p>
+        <button className="autoai-hero-btn" onClick={() => setShowQuiz(true)}>
+          Start Your AI Assessment
+        </button>
+      </div>
+      {showQuiz && <AIAssessmentQuiz onClose={() => setShowQuiz(false)} />}
+      {/* About Us/Mission Section */}
+      <div className="autoai-card autoai-about-hero">
+        <h1 className="autoai-title">Dealership success. Powered by people. Driven by AI-enabled tech.</h1>
+        <p className="autoai-subtitle">We carefully select the right dealers to work with. We don't just partner with anyone.</p>
+      </div>
+      {/* Mission/Vision Section */}
+      <div className="autoai-card">
+        <h2 className="autoai-section-title">Our Mission</h2>
+        <p>
+          Our mission is to equip dealerships with digital solutions that streamline operations and enhance customer engagement. With a team that knows the ins and outs of the auto world and always has an eye on the next big thing in tech, we're the folks dealerships turn to when they're ready to step up their game.
+        </p>
+      </div>
+      {/* Key Stats Section */}
+      <div className="autoai-card autoai-about-stats">
+        <h2 className="autoai-section-title">Why Partner with AutoAI Consult?</h2>
+        <div className="autoai-about-stats-row">
+          <div className="autoai-about-stat"><FaRocket className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={300} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Dealer Partners</div></div>
+          <div className="autoai-about-stat"><FaCogs className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={99} suffix="%" trigger={true} /></div><div className="autoai-about-stat-label">Consultant Retention </div></div>
+          <div className="autoai-about-stat"><FaLightbulb className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={100} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Vendors For Dealers Evaluated</div></div>
+          <div className="autoai-about-stat"><FaUsers className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={20000000} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Dollars Generated </div></div>
+          <div className="autoai-about-stat"><FaUsers className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={97} suffix="%" trigger={true} /></div><div className="autoai-about-stat-label">Client Satisfaction<br/>Post-AI Adoption</div></div>
+        </div>
+      </div>
+      {/* Leadership/Team Section */}
+      <div className="autoai-card autoai-about-team">
+        <h2 className="autoai-section-title">The People Behind the Wheel</h2>
+        <div className="autoai-about-team-row">
+          <div className="autoai-about-team-member">
+            <FaUserTie className="autoai-about-team-icon" />
+            <div className="autoai-about-team-name">Alex Johnson</div>
+            <div className="autoai-about-team-role">Chief Executive Officer</div>
           </div>
-        </section>
-
-        {/* Leadership/Team Section */}
-        <section className="autoai-card autoai-about-team">
-          <h2 className="autoai-section-title">The People Behind the Wheel</h2>
-          <div className="autoai-about-team-row">
-            <div className="autoai-about-team-member">
-              <FaUserTie className="autoai-about-team-icon" />
-              <div className="autoai-about-team-name">Alex Johnson</div>
-              <div className="autoai-about-team-role">Chief Executive Officer</div>
-            </div>
-            <div className="autoai-about-team-member">
-              <FaUserTie className="autoai-about-team-icon" />
-              <div className="autoai-about-team-name">Jamie Lee</div>
-              <div className="autoai-about-team-role">Chief Technology Officer</div>
-            </div>
-            <div className="autoai-about-team-member">
-              <FaUserTie className="autoai-about-team-icon" />
-              <div className="autoai-about-team-name">Morgan Smith</div>
-              <div className="autoai-about-team-role">VP, Client Success</div>
-            </div>
-            <div className="autoai-about-team-member">
-              <FaUserTie className="autoai-about-team-icon" />
-              <div className="autoai-about-team-name">Taylor Brown</div>
-              <div className="autoai-about-team-role">Director, AI Strategy</div>
-            </div>
+          <div className="autoai-about-team-member">
+            <FaUserTie className="autoai-about-team-icon" />
+            <div className="autoai-about-team-name">Jamie Lee</div>
+            <div className="autoai-about-team-role">Chief Technology Officer</div>
           </div>
-        </section>
-      </main>
-    </div>
+          <div className="autoai-about-team-member">
+            <FaUserTie className="autoai-about-team-icon" />
+            <div className="autoai-about-team-name">Morgan Smith</div>
+            <div className="autoai-about-team-role">VP, Client Success</div>
+          </div>
+          <div className="autoai-about-team-member">
+            <FaUserTie className="autoai-about-team-icon" />
+            <div className="autoai-about-team-name">Taylor Brown</div>
+            <div className="autoai-about-team-role">Director, AI Strategy</div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function ContactUs() {
+  const [form, setForm] = useState({
+    email: '', first: '', last: '', job: '', dealership: '', phone: '', country: '', state: '', hear: '', isDealer: 'Yes',
+  });
+  const [submitted, setSubmitted] = useState(false);
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setForm(f => ({ ...f, [name]: value }));
+  };
+  const handleRadio = e => setForm(f => ({ ...f, isDealer: e.target.value }));
+  const handleSubmit = e => {
+    e.preventDefault();
+    setSubmitted(true);
+    // Here you would send the form data to your backend or a service like Formspree/Netlify
+  };
+  if (submitted) {
+    return (
+      <section className="autoai-card"><h2>Thank you!</h2><p>Your message has been received. We’ll be in touch soon.</p></section>
+    );
+  }
+  return (
+    <section className="autoai-card autoai-contact-form-card">
+      <h1 className="autoai-title">Contact Us</h1>
+      <form className="autoai-contact-form" onSubmit={handleSubmit} autoComplete="off">
+        <label>Your work email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
+        <div className="autoai-contact-form-row">
+          <label>First name*<input name="first" required value={form.first} onChange={handleChange} /></label>
+          <label>Last name*<input name="last" required value={form.last} onChange={handleChange} /></label>
+        </div>
+        <label>Job title*<input name="job" required value={form.job} onChange={handleChange} /></label>
+        <div className="autoai-contact-form-row">
+          <span>Are you a car dealership?*</span>
+          <label><input type="radio" name="isDealer" value="Yes" checked={form.isDealer === 'Yes'} onChange={handleRadio} /> Yes</label>
+          <label><input type="radio" name="isDealer" value="No" checked={form.isDealer === 'No'} onChange={handleRadio} /> No</label>
+        </div>
+        <label>Dealership website*<input name="dealership" required value={form.dealership} onChange={handleChange} /></label>
+        <label>Phone number*<input name="phone" required value={form.phone} onChange={handleChange} /></label>
+        <label>Country*<input name="country" required value={form.country} onChange={handleChange} /></label>
+        <label>Region/State*<input name="state" required value={form.state} onChange={handleChange} /></label>
+        <label>How did you hear about us*<input name="hear" required value={form.hear} onChange={handleChange} /></label>
+        <button className="autoai-contact-btn" type="submit">Submit</button>
+      </form>
+    </section>
   );
 }
 
 function AIStrategy() {
   return (
-    <div className="autoai-bg">
-      <main className="autoai-container">
-        <section className="autoai-card autoai-about-hero">
-          <h1 className="autoai-title">AI Strategy for Dealerships</h1>
-          <p className="autoai-subtitle">Unlock the power of artificial intelligence to drive sales, efficiency, and customer satisfaction.</p>
-        </section>
-        <section className="autoai-card">
-          <h2 className="autoai-section-title">What We Offer</h2>
-          <ul className="autoai-services-list">
-            <li><FaBrain className="autoai-icon" /> Custom AI Roadmaps for Your Dealership</li>
-            <li><FaChartBar className="autoai-icon" /> Comparative Analysis: PAM AI vs. TOMA AI and More</li>
-            <li><FaLightbulb className="autoai-icon" /> AI Vendor Evaluation & Selection Guidance</li>
-            <li><FaCogs className="autoai-icon" /> Implementation Planning & Support</li>
-            <li><FaUsers className="autoai-icon" /> Staff Training & Change Management for AI Adoption</li>
-          </ul>
-        </section>
-        <section className="autoai-card autoai-contact-section">
-          <h2 className="autoai-section-title">Ready to Transform Your Dealership?</h2>
-          <p>Contact us to discuss a tailored AI strategy for your business.</p>
-          <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Get in Touch</a>
-        </section>
-      </main>
-    </div>
+    <>
+      <section className="autoai-card autoai-about-hero">
+        <h1 className="autoai-title">AI Strategy for Dealerships</h1>
+        <p className="autoai-subtitle">Unlock the power of artificial intelligence to drive sales, efficiency, and customer satisfaction.</p>
+      </section>
+      <section className="autoai-card">
+        <h2 className="autoai-section-title">What We Offer</h2>
+        <ul className="autoai-services-list">
+          <li><FaBrain className="autoai-icon" /> Custom AI Roadmaps for Your Dealership</li>
+          <li><FaChartBar className="autoai-icon" /> Comparative Analysis: PAM AI vs. TOMA AI and More</li>
+          <li><FaLightbulb className="autoai-icon" /> AI Vendor Evaluation & Selection Guidance</li>
+          <li><FaCogs className="autoai-icon" /> Implementation Planning & Support</li>
+          <li><FaUsers className="autoai-icon" /> Staff Training & Change Management for AI Adoption</li>
+        </ul>
+      </section>
+      <section className="autoai-card autoai-contact-section">
+        <h2 className="autoai-section-title">Ready to Transform Your Dealership?</h2>
+        <p>Contact us to discuss a tailored AI strategy for your business.</p>
+        <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Get in Touch</a>
+      </section>
+    </>
   );
 }
 
 function DataStrategy() {
   return (
-    <div className="autoai-bg">
-      <main className="autoai-container">
-        <section className="autoai-card autoai-about-hero">
-          <h1 className="autoai-title">Data Strategy for Dealerships</h1>
-          <p className="autoai-subtitle">Leverage your dealership’s data for smarter decisions, better marketing, and increased profitability.</p>
-        </section>
-        <section className="autoai-card">
-          <h2 className="autoai-section-title">Our Data Strategy Services</h2>
-          <ul className="autoai-services-list">
-            <li><FaDatabase className="autoai-icon" /> Data Assessment & Cleansing</li>
-            <li><FaChartBar className="autoai-icon" /> Data-Driven Marketing & Sales Insights</li>
-            <li><FaLightbulb className="autoai-icon" /> Data Integration Across Platforms</li>
-            <li><FaCogs className="autoai-icon" /> Data Security & Compliance Guidance</li>
-            <li><FaShieldAlt className="autoai-icon" /> Ongoing Data Management & Support</li>
-          </ul>
-        </section>
-        <section className="autoai-card autoai-contact-section">
-          <h2 className="autoai-section-title">Let’s Build Your Data Advantage</h2>
-          <p>Contact us to unlock the full potential of your dealership’s data.</p>
-          <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Get in Touch</a>
-        </section>
-      </main>
-    </div>
+    <>
+      <section className="autoai-card autoai-about-hero">
+        <h1 className="autoai-title">Data Strategy for Dealerships</h1>
+        <p className="autoai-subtitle">Leverage your dealership’s data for smarter decisions, better marketing, and increased profitability.</p>
+      </section>
+      <section className="autoai-card">
+        <h2 className="autoai-section-title">Our Data Strategy Services</h2>
+        <ul className="autoai-services-list">
+          <li><FaDatabase className="autoai-icon" /> Data Assessment & Cleansing</li>
+          <li><FaChartBar className="autoai-icon" /> Data-Driven Marketing & Sales Insights</li>
+          <li><FaLightbulb className="autoai-icon" /> Data Integration Across Platforms</li>
+          <li><FaCogs className="autoai-icon" /> Data Security & Compliance Guidance</li>
+          <li><FaShieldAlt className="autoai-icon" /> Ongoing Data Management & Support</li>
+        </ul>
+      </section>
+      <section className="autoai-card autoai-contact-section">
+        <h2 className="autoai-section-title">Let’s Build Your Data Advantage</h2>
+        <p>Contact us to unlock the full potential of your dealership’s data.</p>
+        <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Get in Touch</a>
+      </section>
+    </>
+  );
+}
+
+function AIComparison() {
+  const solutions = [
+    {
+      name: 'PAM AI',
+      features: 'Lead scoring, automated follow-up, inventory insights',
+      integrations: 'CRM, DMS, Email, SMS',
+      bestFor: 'Dealerships focused on sales automation',
+      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20PAM%20AI',
+    },
+    {
+      name: 'TOMA AI',
+      features: 'Customer retention, service reminders, analytics',
+      integrations: 'CRM, DMS, Service Scheduler',
+      bestFor: 'Dealerships focused on retention & service',
+      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20TOMA%20AI',
+    },
+    {
+      name: 'Other',
+      features: 'Custom AI solutions, integrations, and more',
+      integrations: 'Custom integrations available',
+      bestFor: 'Dealerships with unique needs',
+      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20Other%20AI%20Solutions',
+    },
+  ];
+  return (
+    <section className="autoai-card autoai-comparison-card">
+      <h1 className="autoai-title">AI Solution Comparison</h1>
+      <p className="autoai-subtitle">Compare leading automotive AI platforms to find the best fit for your dealership.</p>
+      <div className="autoai-comparison-table-wrapper">
+        <table className="autoai-comparison-table">
+          <thead>
+            <tr>
+              <th>Solution</th>
+              <th>Key Features</th>
+              <th>Integrations</th>
+              <th>Best For</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {solutions.map((s) => (
+              <tr key={s.name}>
+                <td><b>{s.name}</b></td>
+                <td>{s.features}</td>
+                <td>{s.integrations}</td>
+                <td>{s.bestFor}</td>
+                <td><a href={s.info} className="autoai-contact-btn autoai-compare-btn">Request Info</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  return (
+    <footer className="autoai-footer">
+      <div className="autoai-footer-inner">
+        <img src={footerLogo} alt="AutoAI Consult Logo" className="autoai-footer-logo" />
+        <div className="autoai-footer-contact">
+          <a href="mailto:info@autoaiconsult.org" className="autoai-footer-link"><FaEnvelope /> info@autoaiconsult.org</a>
+        </div>
+        <div className="autoai-footer-social">
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="autoai-footer-social-icon"><FaLinkedin /></a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="autoai-footer-social-icon"><FaTwitter /></a>
+        </div>
+      </div>
+    </footer>
   );
 }
 
 function App() {
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/ai-strategy" element={<AIStrategy />} />
-        <Route path="/data-strategy" element={<DataStrategy />} />
-      </Routes>
+      <div className="autoai-bg">
+        <Header />
+        <main className="autoai-container">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/ai-strategy" element={<AIStrategy />} />
+            <Route path="/data-strategy" element={<DataStrategy />} />
+            <Route path="/comparison" element={<AIComparison />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }
