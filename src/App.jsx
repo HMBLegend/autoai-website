@@ -244,36 +244,11 @@ function Home() {
           <div className="autoai-about-stat"><FaRocket className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={300} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Dealer Partners</div></div>
           <div className="autoai-about-stat"><FaCogs className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={99} suffix="%" trigger={true} /></div><div className="autoai-about-stat-label">Consultant Retention </div></div>
           <div className="autoai-about-stat"><FaLightbulb className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={100} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Vendors For Dealers Evaluated</div></div>
-          <div className="autoai-about-stat"><FaUsers className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={20000000} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Dollars Generated </div></div>
-          <div className="autoai-about-stat"><FaUsers className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={97} suffix="%" trigger={true} /></div><div className="autoai-about-stat-label">Client Satisfaction<br/>Post-AI Adoption</div></div>
+          <div className="autoai-about-stat"><FaUsers className="autoai-about-stat-icon" /><div className="autoai-about-stat-value">$20 Million</div><div className="autoai-about-stat-label">Dollars Generated </div></div>
         </div>
       </div>
       {/* Leadership/Team Section */}
-      <div className="autoai-card autoai-about-team">
-        <h2 className="autoai-section-title fade-in-on-scroll">The People Behind the Wheel</h2>
-        <div className="autoai-about-team-row">
-          <div className="autoai-about-team-member">
-            <FaUserTie className="autoai-about-team-icon" />
-            <div className="autoai-about-team-name">Alex Johnson</div>
-            <div className="autoai-about-team-role">Chief Executive Officer</div>
-          </div>
-          <div className="autoai-about-team-member">
-            <FaUserTie className="autoai-about-team-icon" />
-            <div className="autoai-about-team-name">Jamie Lee</div>
-            <div className="autoai-about-team-role">Chief Technology Officer</div>
-          </div>
-          <div className="autoai-about-team-member">
-            <FaUserTie className="autoai-about-team-icon" />
-            <div className="autoai-about-team-name">Morgan Smith</div>
-            <div className="autoai-about-team-role">VP, Client Success</div>
-          </div>
-          <div className="autoai-about-team-member">
-            <FaUserTie className="autoai-about-team-icon" />
-            <div className="autoai-about-team-name">Taylor Brown</div>
-            <div className="autoai-about-team-role">Director, AI Strategy</div>
-          </div>
-        </div>
-      </div>
+      {/* Removed leadership/team section as requested */}
     </>
   );
 }
@@ -313,7 +288,9 @@ function ContactUs() {
           <label><input type="radio" name="isDealer" value="Yes" checked={form.isDealer === 'Yes'} onChange={handleRadio} /> Yes</label>
           <label><input type="radio" name="isDealer" value="No" checked={form.isDealer === 'No'} onChange={handleRadio} /> No</label>
         </div>
-        <label>Dealership website*<input name="dealership" type="text" required value={form.dealership} onChange={handleChange} /></label>
+        {form.isDealer === 'Yes' && (
+          <label>Dealership website*<input name="dealership" type="text" required value={form.dealership} onChange={handleChange} /></label>
+        )}
         <label>Phone number*<input name="phone" type="text" required value={form.phone} onChange={handleChange} /></label>
         <label>Country*<input name="country" type="text" required value={form.country} onChange={handleChange} /></label>
         <label>Region/State*<input name="state" type="text" required value={form.state} onChange={handleChange} /></label>

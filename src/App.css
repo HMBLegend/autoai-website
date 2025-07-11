@@ -461,11 +461,16 @@ html, body {
   flex-direction: column;
   align-items: center;
   overflow: visible;
+  background: #232323;
+  border-radius: 1.5rem;
+  padding: 2.2rem 1.2rem 1.2rem 1.2rem;
+  box-shadow: 0 4px 24px 0 rgba(111,255,144,0.10);
 }
 .autoai-about-stat-icon {
   font-size: 2.2rem;
-  color: #3ec6ff;
+  color: #6fff90;
   margin-bottom: 0.5rem;
+  margin-top: 0.2rem;
 }
 .autoai-about-stat-value {
   color: #fff;
