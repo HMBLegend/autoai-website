@@ -489,15 +489,52 @@ function AIComparison() {
   );
 }
 
+function TermsOfService() {
+  return (
+    <section className="autoai-card autoai-legal-card">
+      <h1 className="autoai-title fade-in-on-scroll">Terms of Service</h1>
+      <p className="fade-in-on-scroll">Welcome to AutoAI Consult. By using our website and services, you agree to the following terms and conditions. Please read them carefully.</p>
+      <ul className="fade-in-on-scroll" style={{ textAlign: 'left', maxWidth: 600, margin: '0 auto' }}>
+        <li><b>Use of Service:</b> You agree to use our website and services only for lawful purposes and in accordance with these terms.</li>
+        <li><b>Intellectual Property:</b> All content, trademarks, and data on this site are the property of AutoAI Consult or its licensors.</li>
+        <li><b>Limitation of Liability:</b> We are not liable for any damages arising from your use of our website or services.</li>
+        <li><b>Changes to Terms:</b> We may update these terms at any time. Continued use of the site means you accept the new terms.</li>
+        <li><b>Contact:</b> For questions, contact us at info@autoaiconsult.org.</li>
+      </ul>
+    </section>
+  );
+}
+
+function PrivacyPolicy() {
+  return (
+    <section className="autoai-card autoai-legal-card">
+      <h1 className="autoai-title fade-in-on-scroll">Privacy Policy</h1>
+      <p className="fade-in-on-scroll">Your privacy is important to us. This policy explains how we collect, use, and protect your information.</p>
+      <ul className="fade-in-on-scroll" style={{ textAlign: 'left', maxWidth: 600, margin: '0 auto' }}>
+        <li><b>Information Collection:</b> We collect information you provide directly (such as contact forms) and automatically (such as cookies).</li>
+        <li><b>Use of Information:</b> We use your information to provide and improve our services, and to communicate with you.</li>
+        <li><b>Sharing:</b> We do not sell or rent your personal information. We may share it with trusted partners to operate our services.</li>
+        <li><b>Security:</b> We take reasonable measures to protect your data from unauthorized access.</li>
+        <li><b>Contact:</b> For privacy questions, contact info@autoaiconsult.org.</li>
+      </ul>
+    </section>
+  );
+}
+
 function Footer() {
   return (
     <footer className="autoai-footer">
       <div className="autoai-footer-inner">
-        <img src={footerLogo} alt="AutoAI Consult Logo" className="autoai-footer-logo" />
-        <div className="autoai-footer-contact">
-          <a href="mailto:info@autoaiconsult.org" className="autoai-footer-link"><FaEnvelope /> info@autoaiconsult.org</a>
+        <div className="autoai-footer-legal">
+          <a href="/terms" className="autoai-footer-link">Terms of Service</a>
+          <span className="autoai-footer-divider">|</span>
+          <a href="/privacy" className="autoai-footer-link">Privacy Policy</a>
+        </div>
+        <div className="autoai-footer-copyright">
+          © {new Date().getFullYear()} AutoAI Consult | All Rights Reserved
         </div>
         <div className="autoai-footer-social">
+          <a href="mailto:info@autoaiconsult.org" className="autoai-footer-link"><FaEnvelope /> info@autoaiconsult.org</a>
           <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="autoai-footer-social-icon"><FaLinkedin /></a>
           <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="autoai-footer-social-icon"><FaTwitter /></a>
         </div>
@@ -559,6 +596,8 @@ function App() {
               <Route path="/data-strategy" element={<DataStrategy />} />
               <Route path="/comparison" element={<AIComparison />} />
               <Route path="/contact-us" element={<ContactUsSimple />} />
+              <Route path="/terms" element={<TermsOfService />} />
+              <Route path="/privacy" element={<PrivacyPolicy />} />
             </Routes>
           </FadeInManager>
         </main>
