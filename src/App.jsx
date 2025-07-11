@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from 'react';
 import { FaChevronDown, FaRocket, FaCogs, FaLightbulb, FaUsers, FaUserTie, FaBrain, FaChartBar, FaDatabase, FaShieldAlt, FaEnvelope, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { FaRegClock, FaRegChartBar, FaProjectDiagram, FaChartLine } from 'react-icons/fa';
 import reactLogo from './assets/react.svg';
-import logo from '../images/1.png';
-import footerLogo from '../images/3.png';
+// Remove import statements for logo and footerLogo from images
+// Use public path variables instead
+const logo = '/images/1.png';
+const footerLogo = '/images/footer.png';
 
 function AnimatedCounter({ end, duration = 1200, prefix = '', suffix = '', trigger }) {
   const [count, setCount] = useState(0);
