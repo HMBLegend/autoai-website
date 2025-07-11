@@ -38,8 +38,8 @@ html, body {
 }
 
 .autoai-logo {
-  height: 56px;
-  width: 56px;
+  height: 80px;
+  width: 80px;
   display: block;
   border-radius: 50%;
   background: var(--autoai-accent);
@@ -562,28 +562,30 @@ html, body {
 }
 
 .autoai-quiz-modal {
+  /* Keep the overlay dark, but slightly more green-tinted for brand consistency */
+  background: rgba(20, 40, 25, 0.88);
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(10, 20, 30, 0.75);
-  z-index: 1000;
+  z-index: 2000;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .autoai-quiz-card {
-  background: #22394a;
+  background: var(--autoai-dark);
   border-radius: 1.5rem;
   padding: 2.5rem 2rem 2rem 2rem;
-  box-shadow: 0 4px 32px rgba(0,198,255,0.18);
+  box-shadow: 0 4px 32px rgba(111,255,144,0.18);
   min-width: 320px;
   max-width: 95vw;
   text-align: center;
   position: relative;
-  }
+  border: 2.5px solid var(--autoai-accent);
+}
 .autoai-quiz-question {
   font-size: 1.15rem;
   margin-bottom: 1.5rem;
-  color: #b6e0ff;
+  color: #fff;
 }
 .autoai-quiz-options {
   display: flex;
@@ -592,24 +594,25 @@ html, body {
   margin-bottom: 1.5rem;
 }
 .autoai-quiz-option {
-  background: linear-gradient(90deg, #1da1f2 0%, #007cf0 100%);
-  color: #fff;
-  font-weight: 600;
+  background: linear-gradient(90deg, var(--autoai-accent) 0%, #4be86e 100%);
+  color: var(--autoai-dark);
+  font-weight: 700;
   border: none;
   border-radius: 2rem;
   padding: 0.8rem 1.5rem;
   font-size: 1.05rem;
   cursor: pointer;
-  transition: background 0.18s, box-shadow 0.18s;
-  box-shadow: 0 2px 12px rgba(0,198,255,0.10);
+  transition: background 0.18s, box-shadow 0.18s, color 0.18s;
+  box-shadow: 0 2px 12px rgba(111,255,144,0.10);
 }
 .autoai-quiz-option.selected, .autoai-quiz-option:hover {
-  background: linear-gradient(90deg, #007cf0 0%, #1da1f2 100%);
-  box-shadow: 0 4px 24px rgba(0,198,255,0.18);
+  background: linear-gradient(90deg, #4be86e 0%, var(--autoai-accent) 100%);
+  color: #232323;
+  box-shadow: 0 4px 24px rgba(111,255,144,0.18);
 }
 .autoai-quiz-close {
   background: none;
-  color: #3ec6ff;
+  color: var(--autoai-accent);
   border: none;
   font-size: 1rem;
   margin-top: 1.2rem;
@@ -621,7 +624,7 @@ html, body {
   color: #fff;
 }
 .autoai-quiz-score {
-  color: #3ec6ff;
+  color: var(--autoai-accent);
   font-weight: 700;
   font-size: 1.2em;
 }
@@ -651,8 +654,8 @@ html, body {
 .autoai-contact-form input[type="number"],
 .autoai-contact-form textarea,
 .autoai-contact-form select {
-  background: #fff;
-  color: #232323;
+  background: #fff !important;
+  color: #232323 !important;
   border: 1.5px solid #232323;
   border-radius: 0.6rem;
   padding: 0.7rem 1rem;
@@ -1000,8 +1003,8 @@ html, body {
   background: var(--autoai-dark);
   background-image: url('../images/1.png');
   background-repeat: no-repeat;
-  background-position: right 180px center;
-  background-size: 600px auto;
+  background-position: right 120px center;
+  background-size: 380px auto;
   padding: 150px 0 150px 120px;
   box-sizing: border-box;
   display: flex;
@@ -1043,8 +1046,8 @@ html, body {
 }
 @media (max-width: 1200px) {
   .hero-fullwidth-section {
-    background-size: 400px auto;
-    background-position: right 80px center;
+    background-size: 260px auto;
+    background-position: right 60px center;
   }
   .hero-bcp-content {
     padding: 100px 0 100px 40px;
@@ -1052,7 +1055,7 @@ html, body {
 }
 @media (max-width: 900px) {
   .hero-fullwidth-section {
-    background-size: 200px auto;
+    background-size: 120px auto;
     background-position: right 20px center;
     padding-top: 96px;
   }
@@ -1092,4 +1095,50 @@ html, body {
 .fade-in-on-scroll.is-visible {
   opacity: 1;
   transform: none;
+}
+
+/* Blurred text for solution names in comparison table */
+.blurred-text {
+  filter: blur(4px);
+  user-select: none;
+}
+
+.autoai-contact-form-row.dealer-radio-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2.5rem;
+  margin-bottom: 1.2rem;
+}
+.autoai-contact-form-row.dealer-radio-row > span {
+  min-width: 210px;
+  font-size: 1.08rem;
+  color: #fff;
+  font-weight: 500;
+}
+.autoai-contact-form-row.dealer-radio-row label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: 1.08rem;
+  color: #b6e0ff;
+  font-weight: 500;
+  margin: 0 0.7em 0 0;
+}
+.autoai-contact-form-row.dealer-radio-row input[type="radio"] {
+  accent-color: var(--autoai-accent);
+  width: 1.1em;
+  height: 1.1em;
+  margin-right: 0.3em;
+}
+@media (max-width: 700px) {
+  .autoai-contact-form-row.dealer-radio-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+  .autoai-contact-form-row.dealer-radio-row > span {
+    margin-bottom: 0.2em;
+  }
 }

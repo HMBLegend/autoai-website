@@ -46,7 +46,7 @@ function Header() {
         <Link to="/" className="autoai-logo-link" onClick={closeDropdown}>
           <img src={logo} alt="AutoAI Logo" className="autoai-logo" />
         </Link>
-        <nav className="autoai-nav" style={{ flex: 1 }}>
+        <nav className="autoai-nav" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
           <Link to="/" className="autoai-nav-btn" onClick={closeDropdown}>Home</Link>
           <div
             className="autoai-nav-dropdown"
@@ -69,7 +69,9 @@ function Header() {
               </div>
             )}
           </div>
-          <Link to="/contact" className="autoai-nav-btn" onClick={closeDropdown}>Contact Us</Link>
+          <div style={{ flex: 1 }} />
+          <Link to="/contact" className="autoai-nav-btn" onClick={closeDropdown}>Book an Appointment</Link>
+          <Link to="/contact-us" className="autoai-nav-btn" onClick={closeDropdown} style={{ marginLeft: '1rem' }}>Contact Us</Link>
         </nav>
       </div>
     </header>
@@ -187,6 +189,7 @@ function AIAssessmentQuiz({ onClose }) {
 
 function Home() {
   const [showQuiz, setShowQuiz] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const els = document.querySelectorAll('.fade-in-on-scroll');
     const observer = new window.IntersectionObserver(
@@ -213,7 +216,9 @@ function Home() {
             <button className="autoai-hero-btn" onClick={() => setShowQuiz(true)}>
               Start Your AI Assessment
             </button>
-            <a href="#solutions" className="autoai-hero-btn secondary-cta">View Solutions</a>
+            <button className="autoai-hero-btn secondary-cta" onClick={() => navigate('/comparison')}>
+              View Solutions
+            </button>
           </div>
         </div>
       </section>
@@ -293,25 +298,60 @@ function ContactUs() {
   }
   return (
     <section className="autoai-card autoai-contact-form-card">
-      <h1 className="autoai-title">Contact Us</h1>
+      <h1 className="autoai-title">Book an Appointment</h1>
       <form className="autoai-contact-form" onSubmit={handleSubmit} autoComplete="off">
         <label>Your work email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
         <div className="autoai-contact-form-row">
-          <label>First name*<input name="first" required value={form.first} onChange={handleChange} /></label>
-          <label>Last name*<input name="last" required value={form.last} onChange={handleChange} /></label>
+          <label>First name*<input name="first" type="text" required value={form.first} onChange={handleChange} /></label>
+          <label>Last name*<input name="last" type="text" required value={form.last} onChange={handleChange} /></label>
         </div>
-        <label>Job title*<input name="job" required value={form.job} onChange={handleChange} /></label>
-        <div className="autoai-contact-form-row">
+        <label>Job title*<input name="job" type="text" required value={form.job} onChange={handleChange} /></label>
+        <div className="autoai-contact-form-row dealer-radio-row">
           <span>Are you a car dealership?*</span>
           <label><input type="radio" name="isDealer" value="Yes" checked={form.isDealer === 'Yes'} onChange={handleRadio} /> Yes</label>
           <label><input type="radio" name="isDealer" value="No" checked={form.isDealer === 'No'} onChange={handleRadio} /> No</label>
         </div>
-        <label>Dealership website*<input name="dealership" required value={form.dealership} onChange={handleChange} /></label>
-        <label>Phone number*<input name="phone" required value={form.phone} onChange={handleChange} /></label>
-        <label>Country*<input name="country" required value={form.country} onChange={handleChange} /></label>
-        <label>Region/State*<input name="state" required value={form.state} onChange={handleChange} /></label>
-        <label>How did you hear about us*<input name="hear" required value={form.hear} onChange={handleChange} /></label>
+        <label>Dealership website*<input name="dealership" type="text" required value={form.dealership} onChange={handleChange} /></label>
+        <label>Phone number*<input name="phone" type="text" required value={form.phone} onChange={handleChange} /></label>
+        <label>Country*<input name="country" type="text" required value={form.country} onChange={handleChange} /></label>
+        <label>Region/State*<input name="state" type="text" required value={form.state} onChange={handleChange} /></label>
+        <label>How did you hear about us*<input name="hear" type="text" required value={form.hear} onChange={handleChange} /></label>
         <button className="autoai-contact-btn" type="submit">Submit</button>
+      </form>
+    </section>
+  );
+}
+
+function ContactUsSimple() {
+  const [form, setForm] = useState({ name: '', email: '', message: '', screenshot: null });
+  const [submitted, setSubmitted] = useState(false);
+  const handleChange = e => {
+    const { name, value, files } = e.target;
+    if (name === 'screenshot') {
+      setForm(f => ({ ...f, screenshot: files[0] }));
+    } else {
+      setForm(f => ({ ...f, [name]: value }));
+    }
+  };
+  const handleSubmit = e => {
+    e.preventDefault();
+    setSubmitted(true);
+    // Here you would send the form data to your backend or email service
+  };
+  if (submitted) {
+    return (
+      <section className="autoai-card autoai-contact-form-card"><h2>Thank you!</h2><p>Your message has been sent.</p></section>
+    );
+  }
+  return (
+    <section className="autoai-card autoai-contact-form-card">
+      <h1 className="autoai-title">Contact Us</h1>
+      <form className="autoai-contact-form" onSubmit={handleSubmit} autoComplete="off">
+        <label>Your Name*<input name="name" type="text" required value={form.name} onChange={handleChange} /></label>
+        <label>Your Email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
+        <label>Your Message*<textarea name="message" required value={form.message} onChange={handleChange} rows={5} /></label>
+        <label>Screenshot (optional)<input name="screenshot" type="file" accept="image/*" onChange={handleChange} /></label>
+        <button className="autoai-contact-btn" type="submit">Send Message</button>
       </form>
     </section>
   );
@@ -386,11 +426,25 @@ function AIComparison() {
       info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20TOMA%20AI',
     },
     {
-      name: 'Other',
-      features: 'Custom AI solutions, integrations, and more',
+      name: 'VisionDrive AI',
+      features: 'Predictive analytics, marketing automation, customer segmentation',
+      integrations: 'CRM, Marketing Platforms, DMS',
+      bestFor: 'Dealerships seeking advanced marketing insights',
+      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20VisionDrive%20AI',
+    },
+    {
+      name: 'AutoPilot AI',
+      features: 'Workflow automation, appointment scheduling, chatbot support',
+      integrations: 'Website, CRM, Calendar, SMS',
+      bestFor: 'Dealerships wanting to automate customer engagement',
+      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20AutoPilot%20AI',
+    },
+    {
+      name: 'Custom AI Solutions',
+      features: 'Tailored AI tools, custom integrations, unique workflows',
       integrations: 'Custom integrations available',
-      bestFor: 'Dealerships with unique needs',
-      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20Other%20AI%20Solutions',
+      bestFor: 'Dealerships with unique or complex needs',
+      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20Custom%20AI%20Solutions',
     },
   ];
   return (
@@ -409,15 +463,23 @@ function AIComparison() {
             </tr>
           </thead>
           <tbody>
-            {solutions.map((s) => (
-              <tr key={s.name}>
-                <td><b>{s.name}</b></td>
-                <td>{s.features}</td>
-                <td>{s.integrations}</td>
-                <td>{s.bestFor}</td>
-                <td><a href={s.info} className="autoai-contact-btn autoai-compare-btn">Request Info</a></td>
-              </tr>
-            ))}
+            {solutions.map((s, i) => {
+              // Generate a random word for each solution name
+              const randomWords = [
+                'Nebula', 'Quantum', 'Nimbus', 'Vertex', 'Pulse',
+                'Zenith', 'Echo', 'Nova', 'Spectra', 'Flux'
+              ];
+              const randomName = randomWords[i % randomWords.length];
+              return (
+                <tr key={s.name}>
+                  <td><b className="blurred-text">{randomName}</b></td>
+                  <td>{s.features}</td>
+                  <td>{s.integrations}</td>
+                  <td>{s.bestFor}</td>
+                  <td><a href={s.info} className="autoai-contact-btn autoai-compare-btn">Request Info</a></td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
@@ -454,6 +516,7 @@ function App() {
             <Route path="/ai-strategy" element={<AIStrategy />} />
             <Route path="/data-strategy" element={<DataStrategy />} />
             <Route path="/comparison" element={<AIComparison />} />
+            <Route path="/contact-us" element={<ContactUsSimple />} />
           </Routes>
         </main>
         <Footer />

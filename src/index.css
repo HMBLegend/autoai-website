@@ -54,6 +54,17 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="url"],
+input[type="number"],
+textarea,
+select {
+  background: #fff !important;
+  color: #232323 !important;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
