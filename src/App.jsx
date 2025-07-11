@@ -1,5 +1,5 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
 import { FaChevronDown, FaRocket, FaCogs, FaLightbulb, FaUsers, FaUserTie, FaBrain, FaChartBar, FaDatabase, FaShieldAlt, FaEnvelope, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { FaRegClock, FaRegChartBar, FaProjectDiagram, FaChartLine } from 'react-icons/fa';
@@ -225,19 +225,19 @@ function Home() {
       {showQuiz && <AIAssessmentQuiz onClose={() => setShowQuiz(false)} />}
       {/* About Us/Mission Section */}
       <div className="autoai-card autoai-about-hero">
-        <h1 className="autoai-title">Dealership success. Powered by people. Driven by AI-enabled tech.</h1>
-        <p className="autoai-subtitle">We carefully select the right dealers to work with. We don't just partner with anyone.</p>
+        <h1 className="autoai-title fade-in-on-scroll">Dealership success. Powered by people. Driven by AI-enabled tech.</h1>
+        <p className="autoai-subtitle fade-in-on-scroll">We carefully select the right dealers to work with. We don't just partner with anyone.</p>
       </div>
       {/* Mission/Vision Section */}
       <div className="autoai-card">
-        <h2 className="autoai-section-title">Our Mission</h2>
-        <p>
+        <h2 className="autoai-section-title fade-in-on-scroll">Our Mission</h2>
+        <p className="fade-in-on-scroll">
           Our mission is to equip dealerships with digital solutions that streamline operations and enhance customer engagement. With a team that knows the ins and outs of the auto world and always has an eye on the next big thing in tech, we're the folks dealerships turn to when they're ready to step up their game.
         </p>
       </div>
       {/* Key Stats Section */}
       <div className="autoai-card autoai-about-stats">
-        <h2 className="autoai-section-title">Why Partner with AutoAI Consult?</h2>
+        <h2 className="autoai-section-title fade-in-on-scroll">Why Partner with AutoAI Consult?</h2>
         <div className="autoai-about-stats-row">
           <div className="autoai-about-stat"><FaRocket className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={300} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Dealer Partners</div></div>
           <div className="autoai-about-stat"><FaCogs className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={99} suffix="%" trigger={true} /></div><div className="autoai-about-stat-label">Consultant Retention </div></div>
@@ -248,7 +248,7 @@ function Home() {
       </div>
       {/* Leadership/Team Section */}
       <div className="autoai-card autoai-about-team">
-        <h2 className="autoai-section-title">The People Behind the Wheel</h2>
+        <h2 className="autoai-section-title fade-in-on-scroll">The People Behind the Wheel</h2>
         <div className="autoai-about-team-row">
           <div className="autoai-about-team-member">
             <FaUserTie className="autoai-about-team-icon" />
@@ -298,8 +298,8 @@ function ContactUs() {
   }
   return (
     <section className="autoai-card autoai-contact-form-card">
-      <h1 className="autoai-title">Book an Appointment</h1>
-      <form className="autoai-contact-form" onSubmit={handleSubmit} autoComplete="off">
+      <h1 className="autoai-title fade-in-on-scroll">Book an Appointment</h1>
+      <form className="autoai-contact-form fade-in-on-scroll" onSubmit={handleSubmit} autoComplete="off">
         <label>Your work email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
         <div className="autoai-contact-form-row">
           <label>First name*<input name="first" type="text" required value={form.first} onChange={handleChange} /></label>
@@ -345,8 +345,8 @@ function ContactUsSimple() {
   }
   return (
     <section className="autoai-card autoai-contact-form-card">
-      <h1 className="autoai-title">Contact Us</h1>
-      <form className="autoai-contact-form" onSubmit={handleSubmit} autoComplete="off">
+      <h1 className="autoai-title fade-in-on-scroll">Contact Us</h1>
+      <form className="autoai-contact-form fade-in-on-scroll" onSubmit={handleSubmit} autoComplete="off">
         <label>Your Name*<input name="name" type="text" required value={form.name} onChange={handleChange} /></label>
         <label>Your Email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
         <label>Your Message*<textarea name="message" required value={form.message} onChange={handleChange} rows={5} /></label>
@@ -361,11 +361,11 @@ function AIStrategy() {
   return (
     <>
       <section className="autoai-card autoai-about-hero">
-        <h1 className="autoai-title">AI Strategy for Dealerships</h1>
-        <p className="autoai-subtitle">Unlock the power of artificial intelligence to drive sales, efficiency, and customer satisfaction.</p>
+        <h1 className="autoai-title fade-in-on-scroll">AI Strategy for Dealerships</h1>
+        <p className="autoai-subtitle fade-in-on-scroll">Unlock the power of artificial intelligence to drive sales, efficiency, and customer satisfaction.</p>
       </section>
       <section className="autoai-card">
-        <h2 className="autoai-section-title">What We Offer</h2>
+        <h2 className="autoai-section-title fade-in-on-scroll">What We Offer</h2>
         <ul className="autoai-services-list">
           <li><FaBrain className="autoai-icon" /> Custom AI Roadmaps for Your Dealership</li>
           <li><FaChartBar className="autoai-icon" /> Comparative Analysis: PAM AI vs. TOMA AI and More</li>
@@ -375,8 +375,8 @@ function AIStrategy() {
         </ul>
       </section>
       <section className="autoai-card autoai-contact-section">
-        <h2 className="autoai-section-title">Ready to Transform Your Dealership?</h2>
-        <p>Contact us to discuss a tailored AI strategy for your business.</p>
+        <h2 className="autoai-section-title fade-in-on-scroll">Ready to Transform Your Dealership?</h2>
+        <p className="fade-in-on-scroll">Contact us to discuss a tailored AI strategy for your business.</p>
         <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Get in Touch</a>
       </section>
     </>
@@ -387,11 +387,11 @@ function DataStrategy() {
   return (
     <>
       <section className="autoai-card autoai-about-hero">
-        <h1 className="autoai-title">Data Strategy for Dealerships</h1>
-        <p className="autoai-subtitle">Leverage your dealership’s data for smarter decisions, better marketing, and increased profitability.</p>
+        <h1 className="autoai-title fade-in-on-scroll">Data Strategy for Dealerships</h1>
+        <p className="autoai-subtitle fade-in-on-scroll">Leverage your dealership’s data for smarter decisions, better marketing, and increased profitability.</p>
       </section>
       <section className="autoai-card">
-        <h2 className="autoai-section-title">Our Data Strategy Services</h2>
+        <h2 className="autoai-section-title fade-in-on-scroll">Our Data Strategy Services</h2>
         <ul className="autoai-services-list">
           <li><FaDatabase className="autoai-icon" /> Data Assessment & Cleansing</li>
           <li><FaChartBar className="autoai-icon" /> Data-Driven Marketing & Sales Insights</li>
@@ -401,8 +401,8 @@ function DataStrategy() {
         </ul>
       </section>
       <section className="autoai-card autoai-contact-section">
-        <h2 className="autoai-section-title">Let’s Build Your Data Advantage</h2>
-        <p>Contact us to unlock the full potential of your dealership’s data.</p>
+        <h2 className="autoai-section-title fade-in-on-scroll">Let’s Build Your Data Advantage</h2>
+        <p className="fade-in-on-scroll">Contact us to unlock the full potential of your dealership’s data.</p>
         <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Get in Touch</a>
       </section>
     </>
@@ -449,8 +449,8 @@ function AIComparison() {
   ];
   return (
     <section className="autoai-card autoai-comparison-card">
-      <h1 className="autoai-title">AI Solution Comparison</h1>
-      <p className="autoai-subtitle">Compare leading automotive AI platforms to find the best fit for your dealership.</p>
+      <h1 className="autoai-title fade-in-on-scroll">AI Solution Comparison</h1>
+      <p className="autoai-subtitle fade-in-on-scroll">Compare leading automotive AI platforms to find the best fit for your dealership.</p>
       <div className="autoai-comparison-table-wrapper">
         <table className="autoai-comparison-table">
           <thead>
@@ -504,20 +504,61 @@ function Footer() {
   );
 }
 
+// Helper to check if an element is in the viewport
+function isInViewport(el) {
+  const rect = el.getBoundingClientRect();
+  return (
+    rect.top < window.innerHeight &&
+    rect.bottom > 0 &&
+    rect.left < window.innerWidth &&
+    rect.right > 0
+  );
+}
+
+function FadeInManager({ children }) {
+  const location = useLocation();
+  useEffect(() => {
+    // On route change, add .is-visible to all .fade-in-on-scroll elements in viewport
+    const els = document.querySelectorAll('.fade-in-on-scroll');
+    els.forEach(el => {
+      el.classList.remove('is-visible'); // Reset for animation on navigation
+      if (isInViewport(el)) {
+        el.classList.add('is-visible');
+      }
+    });
+    // Also keep the Intersection Observer for scroll-in
+    const observer = new window.IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    els.forEach(el => observer.observe(el));
+    return () => observer.disconnect();
+  }, [location]);
+  return children;
+}
+
 function App() {
   return (
     <Router>
       <div className="autoai-bg">
         <Header />
         <main className="autoai-container">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/contact" element={<ContactUs />} />
-            <Route path="/ai-strategy" element={<AIStrategy />} />
-            <Route path="/data-strategy" element={<DataStrategy />} />
-            <Route path="/comparison" element={<AIComparison />} />
-            <Route path="/contact-us" element={<ContactUsSimple />} />
-          </Routes>
+          <FadeInManager>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/ai-strategy" element={<AIStrategy />} />
+              <Route path="/data-strategy" element={<DataStrategy />} />
+              <Route path="/comparison" element={<AIComparison />} />
+              <Route path="/contact-us" element={<ContactUsSimple />} />
+            </Routes>
+          </FadeInManager>
         </main>
         <Footer />
       </div>
