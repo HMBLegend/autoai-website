@@ -242,7 +242,7 @@ function Home() {
         <h2 className="autoai-section-title fade-in-on-scroll">Why Partner with AutoAI Consult?</h2>
         <div className="autoai-about-stats-row">
           <div className="autoai-about-stat"><FaRocket className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={300} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Dealer Partners</div></div>
-          <div className="autoai-about-stat"><FaCogs className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={99} suffix="%" trigger={true} /></div><div className="autoai-about-stat-label">Consultant Retention </div></div>
+          <div className="autoai-about-stat"><FaCogs className="autoai-about-stat-icon" /><div className="autoai-about-stat-value">96%</div><div className="autoai-about-stat-label">Consultant Retention </div></div>
           <div className="autoai-about-stat"><FaLightbulb className="autoai-about-stat-icon" /><div className="autoai-about-stat-value"><AnimatedCounter end={100} suffix="+" trigger={true} /></div><div className="autoai-about-stat-label">Vendors For Dealers Evaluated</div></div>
           <div className="autoai-about-stat"><FaUsers className="autoai-about-stat-icon" /><div className="autoai-about-stat-value">$20 Million</div><div className="autoai-about-stat-label">Dollars Generated </div></div>
         </div>
@@ -258,15 +258,30 @@ function ContactUs() {
     email: '', first: '', last: '', job: '', dealership: '', phone: '', country: '', state: '', hear: '', isDealer: 'Yes',
   });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
   const handleChange = e => {
     const { name, value } = e.target;
     setForm(f => ({ ...f, [name]: value }));
   };
   const handleRadio = e => setForm(f => ({ ...f, isDealer: e.target.value }));
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setSubmitted(true);
-    // Here you would send the form data to your backend or a service like Formspree/Netlify
+    setError(null);
+    const data = new FormData(e.target);
+    try {
+      const response = await fetch('https://formspree.io/f/xrblzdrv', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data,
+      });
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setError('There was an error sending your message.');
+      }
+    } catch (err) {
+      setError('There was an error sending your message.');
+    }
   };
   if (submitted) {
     return (
@@ -277,7 +292,7 @@ function ContactUs() {
     <section className="autoai-card autoai-contact-form-card">
       <h1 className="autoai-title fade-in-on-scroll">Book an Appointment</h1>
       <form className="autoai-contact-form fade-in-on-scroll" onSubmit={handleSubmit} autoComplete="off">
-        <label>Your work email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
+        <label>Your email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
         <div className="autoai-contact-form-row">
           <label>First name*<input name="first" type="text" required value={form.first} onChange={handleChange} /></label>
           <label>Last name*<input name="last" type="text" required value={form.last} onChange={handleChange} /></label>
@@ -291,11 +306,12 @@ function ContactUs() {
         {form.isDealer === 'Yes' && (
           <label>Dealership website*<input name="dealership" type="text" required value={form.dealership} onChange={handleChange} /></label>
         )}
-        <label>Phone number*<input name="phone" type="text" required value={form.phone} onChange={handleChange} /></label>
+        <label>Phone number<input name="phone" type="text" required value={form.phone} onChange={handleChange} /></label>
         <label>Country*<input name="country" type="text" required value={form.country} onChange={handleChange} /></label>
         <label>Region/State*<input name="state" type="text" required value={form.state} onChange={handleChange} /></label>
         <label>How did you hear about us*<input name="hear" type="text" required value={form.hear} onChange={handleChange} /></label>
         <button className="autoai-contact-btn" type="submit">Submit</button>
+        {error && <div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>}
       </form>
     </section>
   );
@@ -304,6 +320,7 @@ function ContactUs() {
 function ContactUsSimple() {
   const [form, setForm] = useState({ name: '', email: '', message: '', screenshot: null });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
   const handleChange = e => {
     const { name, value, files } = e.target;
     if (name === 'screenshot') {
@@ -312,10 +329,24 @@ function ContactUsSimple() {
       setForm(f => ({ ...f, [name]: value }));
     }
   };
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    setSubmitted(true);
-    // Here you would send the form data to your backend or email service
+    setError(null);
+    const data = new FormData(e.target);
+    try {
+      const response = await fetch('https://formspree.io/f/xrblzdrv', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: data,
+      });
+      if (response.ok) {
+        setSubmitted(true);
+      } else {
+        setError('There was an error sending your message.');
+      }
+    } catch (err) {
+      setError('There was an error sending your message.');
+    }
   };
   if (submitted) {
     return (
@@ -331,12 +362,14 @@ function ContactUsSimple() {
         <label>Your Message*<textarea name="message" required value={form.message} onChange={handleChange} rows={5} /></label>
         <label>Screenshot (optional)<input name="screenshot" type="file" accept="image/*" onChange={handleChange} /></label>
         <button className="autoai-contact-btn" type="submit">Send Message</button>
+        {error && <div style={{ color: 'red', marginTop: '1rem' }}>{error}</div>}
       </form>
     </section>
   );
 }
 
 function AIStrategy() {
+  const navigate = useNavigate();
   return (
     <>
       <section className="autoai-card autoai-about-hero">
@@ -356,13 +389,14 @@ function AIStrategy() {
       <section className="autoai-card autoai-contact-section">
         <h2 className="autoai-section-title fade-in-on-scroll">Ready to Transform Your Dealership?</h2>
         <p className="fade-in-on-scroll">Contact us to discuss a tailored AI strategy for your business.</p>
-        <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Get in Touch</a>
+        <button className="autoai-contact-btn" onClick={() => navigate('/contact-us')}>Get in Touch</button>
       </section>
     </>
   );
 }
 
 function DataStrategy() {
+  const navigate = useNavigate();
   return (
     <>
       <section className="autoai-card autoai-about-hero">
@@ -382,48 +416,44 @@ function DataStrategy() {
       <section className="autoai-card autoai-contact-section">
         <h2 className="autoai-section-title fade-in-on-scroll">Let’s Build Your Data Advantage</h2>
         <p className="fade-in-on-scroll">Contact us to unlock the full potential of your dealership’s data.</p>
-        <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Get in Touch</a>
+        <button className="autoai-contact-btn" onClick={() => navigate('/contact-us')}>Get in Touch</button>
       </section>
     </>
   );
 }
 
 function AIComparison() {
+  const navigate = useNavigate();
   const solutions = [
     {
       name: 'PAM AI',
       features: 'Lead scoring, automated follow-up, inventory insights',
       integrations: 'CRM, DMS, Email, SMS',
       bestFor: 'Dealerships focused on sales automation',
-      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20PAM%20AI',
     },
     {
       name: 'TOMA AI',
       features: 'Customer retention, service reminders, analytics',
       integrations: 'CRM, DMS, Service Scheduler',
       bestFor: 'Dealerships focused on retention & service',
-      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20TOMA%20AI',
     },
     {
       name: 'VisionDrive AI',
       features: 'Predictive analytics, marketing automation, customer segmentation',
       integrations: 'CRM, Marketing Platforms, DMS',
       bestFor: 'Dealerships seeking advanced marketing insights',
-      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20VisionDrive%20AI',
     },
     {
       name: 'AutoPilot AI',
       features: 'Workflow automation, appointment scheduling, chatbot support',
       integrations: 'Website, CRM, Calendar, SMS',
       bestFor: 'Dealerships wanting to automate customer engagement',
-      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20AutoPilot%20AI',
     },
     {
       name: 'Custom AI Solutions',
       features: 'Tailored AI tools, custom integrations, unique workflows',
       integrations: 'Custom integrations available',
       bestFor: 'Dealerships with unique or complex needs',
-      info: 'mailto:info@autoaiconsult.org?subject=Request%20Info%20about%20Custom%20AI%20Solutions',
     },
   ];
   return (
@@ -455,7 +485,7 @@ function AIComparison() {
                   <td>{s.features}</td>
                   <td>{s.integrations}</td>
                   <td>{s.bestFor}</td>
-                  <td><a href={s.info} className="autoai-contact-btn autoai-compare-btn">Request Info</a></td>
+                  <td><button className="autoai-contact-btn autoai-compare-btn" onClick={() => navigate('/contact')}>Request Info</button></td>
                 </tr>
               );
             })}
