@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { FaChevronDown, FaRocket, FaCogs, FaLightbulb, FaUsers, FaUserTie, FaBrain, FaChartBar, FaDatabase, FaShieldAlt, FaEnvelope, FaLinkedin, FaTwitter } from 'react-icons/fa';
+import { FaChevronDown, FaRocket, FaCogs, FaLightbulb, FaUsers, FaUserTie, FaBrain, FaChartBar, FaDatabase, FaShieldAlt, FaEnvelope, FaLinkedin, FaTwitter, FaBars, FaTimes } from 'react-icons/fa';
 import { FaRegClock, FaRegChartBar, FaProjectDiagram, FaChartLine } from 'react-icons/fa';
 import reactLogo from './assets/react.svg';
 // Remove import statements for logo and footerLogo from images
@@ -36,19 +36,22 @@ function AnimatedCounter({ end, duration = 1200, prefix = '', suffix = '', trigg
 
 function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleDropdownEnter = () => setDropdownOpen(true);
   const handleDropdownLeave = () => setDropdownOpen(false);
   const closeDropdown = () => setDropdownOpen(false);
+  const closeMobileMenu = () => setMobileMenuOpen(false);
 
   return (
     <header className="autoai-header">
       <div className="autoai-header-inner">
-        <Link to="/" className="autoai-logo-link" onClick={closeDropdown}>
+        <Link to="/" className="autoai-logo-link" onClick={() => { closeDropdown(); closeMobileMenu(); }}>
           <img src={logo} alt="AutoAI Logo" className="autoai-logo" />
         </Link>
-        <nav className="autoai-nav" style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
+        {/* Desktop Nav */}
+        <nav className="autoai-nav autoai-desktop-nav">
           <Link to="/" className="autoai-nav-btn" onClick={closeDropdown}>Home</Link>
           <div
             className="autoai-nav-dropdown"
@@ -75,6 +78,26 @@ function Header() {
           <Link to="/contact" className="autoai-nav-btn" onClick={closeDropdown}>Book an Appointment</Link>
           <Link to="/contact-us" className="autoai-nav-btn" onClick={closeDropdown} style={{ marginLeft: '1rem' }}>Contact Us</Link>
         </nav>
+        {/* Hamburger Icon for Mobile */}
+        <button className="autoai-hamburger" onClick={() => setMobileMenuOpen(o => !o)} aria-label="Open menu">
+          {mobileMenuOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
+        </button>
+        {/* Mobile Nav Drawer */}
+        {mobileMenuOpen && (
+          <nav className="autoai-mobile-nav">
+            <Link to="/" className="autoai-nav-btn" onClick={closeMobileMenu}>Home</Link>
+            <div className="autoai-mobile-dropdown">
+              <span className="autoai-nav-btn">Resources <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} /></span>
+              <div className="autoai-mobile-dropdown-menu">
+                <Link to="/ai-strategy" className="autoai-dropdown-item" onClick={closeMobileMenu}>AI Strategy</Link>
+                <Link to="/data-strategy" className="autoai-dropdown-item" onClick={closeMobileMenu}>Data Strategy</Link>
+                <Link to="/comparison" className="autoai-dropdown-item" onClick={closeMobileMenu}>AI Comparison</Link>
+              </div>
+            </div>
+            <Link to="/contact" className="autoai-nav-btn" onClick={closeMobileMenu}>Book an Appointment</Link>
+            <Link to="/contact-us" className="autoai-nav-btn" onClick={closeMobileMenu}>Contact Us</Link>
+          </nav>
+        )}
       </div>
     </header>
   );
