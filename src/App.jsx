@@ -403,7 +403,7 @@ function AIStrategy() {
         <h2 className="autoai-section-title fade-in-on-scroll">What We Offer</h2>
         <ul className="autoai-services-list">
           <li><FaBrain className="autoai-icon" /> Custom AI Roadmaps for Your Dealership</li>
-          <li><FaChartBar className="autoai-icon" /> Comparative Analysis: PAM AI vs. TOMA AI and More</li>
+          <li><FaChartBar className="autoai-icon" /> Comparative Analysis of AI Solutions</li>
           <li><FaLightbulb className="autoai-icon" /> AI Vendor Evaluation & Selection Guidance</li>
           <li><FaCogs className="autoai-icon" /> Implementation Planning & Support</li>
           <li><FaUsers className="autoai-icon" /> Staff Training & Change Management for AI Adoption</li>
