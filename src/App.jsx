@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import { FaChevronDown, FaRocket, FaCogs, FaLightbulb, FaUsers, FaUserTie, FaBrain, FaChartBar, FaDatabase, FaShieldAlt, FaEnvelope, FaLinkedin, FaTwitter, FaBars, FaTimes } from 'react-icons/fa';
+import { FaChevronDown, FaRocket, FaCogs, FaLightbulb, FaUsers, FaUserTie, FaBrain, FaChartBar, FaDatabase, FaShieldAlt, FaEnvelope, FaLinkedin, FaTwitter, FaBars, FaTimes, FaQuoteLeft, FaStar, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { FaRegClock, FaRegChartBar, FaProjectDiagram, FaChartLine } from 'react-icons/fa';
 import reactLogo from './assets/react.svg';
 // Remove import statements for logo and footerLogo from images
@@ -37,17 +37,30 @@ function AnimatedCounter({ end, duration = 1200, prefix = '', suffix = '', trigg
 function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuClosing, setMobileMenuClosing] = useState(false);
   const navigate = useNavigate();
 
   const handleDropdownEnter = () => setDropdownOpen(true);
   const handleDropdownLeave = () => setDropdownOpen(false);
   const closeDropdown = () => setDropdownOpen(false);
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+  
+  const closeMobileMenu = () => {
+    setMobileMenuClosing(true);
+    setTimeout(() => {
+      setMobileMenuOpen(false);
+      setMobileMenuClosing(false);
+    }, 800); // Match animation duration
+  };
 
   return (
     <header className="autoai-header">
       <div className="autoai-header-inner">
-        <Link to="/" className="autoai-logo-link" onClick={() => { closeDropdown(); closeMobileMenu(); }}>
+        <Link to="/" className="autoai-logo-link" onClick={() => { 
+          closeDropdown(); 
+          if (mobileMenuOpen) {
+            closeMobileMenu();
+          }
+        }}>
           <img src={logo} alt="AutoAI Logo" className="autoai-logo" />
         </Link>
         {/* Desktop Nav */}
@@ -79,12 +92,18 @@ function Header() {
           <Link to="/contact-us" className="autoai-nav-btn" onClick={closeDropdown} style={{ marginLeft: '1rem' }}>Contact Us</Link>
         </nav>
         {/* Hamburger Icon for Mobile */}
-        <button className="autoai-hamburger" onClick={() => setMobileMenuOpen(o => !o)} aria-label="Open menu">
+        <button className="autoai-hamburger" onClick={() => {
+          if (mobileMenuOpen) {
+            closeMobileMenu();
+          } else {
+            setMobileMenuOpen(true);
+          }
+        }} aria-label="Open menu">
           {mobileMenuOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
         </button>
         {/* Mobile Nav Drawer */}
-        {mobileMenuOpen && (
-          <nav className="autoai-mobile-nav">
+        {(mobileMenuOpen || mobileMenuClosing) && (
+          <nav className={`autoai-mobile-nav ${mobileMenuClosing ? 'closing' : ''}`}>
             <Link to="/" className="autoai-nav-btn" onClick={closeMobileMenu}>Home</Link>
             <div className="autoai-mobile-dropdown">
               <span className="autoai-nav-btn">Resources <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} /></span>
@@ -106,6 +125,7 @@ function Header() {
 function AIAssessmentQuiz({ onClose }) {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({ size: '', pain: '', tech: '', goal: '' });
+  const navigate = useNavigate();
 
   const questions = [
     {
@@ -182,7 +202,10 @@ function AIAssessmentQuiz({ onClose }) {
             {readiness === 'Intermediate' && 'You are on your way to AI adoption. Let’s discuss the best next steps for your dealership.'}
             {readiness === 'Basic' && 'AI can help your dealership grow. Let’s explore the right starting point for you.'}
           </p>
-          <a href="mailto:info@autoaiconsult.org" className="autoai-contact-btn">Book a Free Consultation</a>
+          <button className="autoai-contact-btn" onClick={() => {
+            onClose();
+            navigate('/contact');
+          }}>Book a Free Consultation</button>
           <button className="autoai-quiz-close" onClick={onClose}>Close</button>
         </div>
       </div>
@@ -314,6 +337,7 @@ function ContactUs() {
   return (
     <section className="autoai-card autoai-contact-form-card">
       <h1 className="autoai-title fade-in-on-scroll">Book an Appointment</h1>
+      <p className="autoai-subtitle fade-in-on-scroll">Book a free consultation appointment and one of our specialists will reach out to you shortly.</p>
       <form className="autoai-contact-form fade-in-on-scroll" onSubmit={handleSubmit} autoComplete="off">
         <label>Your email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
         <div className="autoai-contact-form-row">
@@ -379,6 +403,7 @@ function ContactUsSimple() {
   return (
     <section className="autoai-card autoai-contact-form-card">
       <h1 className="autoai-title fade-in-on-scroll">Contact Us</h1>
+      <p className="autoai-subtitle fade-in-on-scroll">Have a question or need assistance? Send us a message and we'll get back to you as soon as possible.</p>
       <form className="autoai-contact-form fade-in-on-scroll" onSubmit={handleSubmit} autoComplete="off">
         <label>Your Name*<input name="name" type="text" required value={form.name} onChange={handleChange} /></label>
         <label>Your Email*<input name="email" type="email" required value={form.email} onChange={handleChange} /></label>
@@ -514,6 +539,37 @@ function AIComparison() {
             })}
           </tbody>
         </table>
+        
+        {/* Mobile-friendly comparison cards */}
+        <div className="autoai-comparison-table-mobile">
+          {solutions.map((s, i) => {
+            const randomWords = [
+              'Nebula', 'Quantum', 'Nimbus', 'Vertex', 'Pulse',
+              'Zenith', 'Echo', 'Nova', 'Spectra', 'Flux'
+            ];
+            const randomName = randomWords[i % randomWords.length];
+            return (
+              <div key={s.name} className="autoai-comparison-mobile-card fade-in-on-scroll">
+                <div className="autoai-comparison-mobile-title">{randomName}</div>
+                <div className="autoai-comparison-mobile-feature">
+                  <div className="autoai-comparison-mobile-label">Key Features:</div>
+                  <div className="autoai-comparison-mobile-value">{s.features}</div>
+                </div>
+                <div className="autoai-comparison-mobile-feature">
+                  <div className="autoai-comparison-mobile-label">Integrations:</div>
+                  <div className="autoai-comparison-mobile-value">{s.integrations}</div>
+                </div>
+                <div className="autoai-comparison-mobile-feature">
+                  <div className="autoai-comparison-mobile-label">Best For:</div>
+                  <div className="autoai-comparison-mobile-value">{s.bestFor}</div>
+                </div>
+                <button className="autoai-contact-btn autoai-compare-btn autoai-comparison-mobile-btn" onClick={() => navigate('/contact')}>
+                  Request Info
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

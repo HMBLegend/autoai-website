@@ -1116,13 +1116,13 @@ html, body {
   margin-left: -50vw;
   margin-right: -50vw;
   width: 100vw;
-  min-height: calc(100vh - 128px);
+  min-height: 45vh;
   background: var(--autoai-dark);
   background-image: url('../images/1.png');
   background-repeat: no-repeat;
-  background-position: right 120px top 120px;
+  background-position: right 120px top 80px;
   background-size: 380px auto;
-  padding: 120px 0 150px 120px;
+  padding: 60px 0 80px 120px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1166,21 +1166,21 @@ html, body {
 @media (max-width: 1200px) {
   .hero-fullwidth-section {
     background-size: 260px auto;
-    background-position: right 60px top 120px;
+    background-position: right 60px top 60px;
   }
   .hero-bcp-content {
-    padding: 100px 0 100px 40px;
+    padding: 40px 0 40px 40px;
   }
 }
 @media (max-width: 900px) {
   .hero-fullwidth-section {
     background-size: 120px auto;
-    background-position: right 20px top 120px;
-    padding-top: 96px;
+    background-position: right 20px top 60px;
+    padding-top: 40px;
   }
   .hero-bcp-content {
     max-width: 100%;
-    padding: 60px 0 60px 10px;
+    padding: 30px 0 30px 10px;
     align-items: flex-start;
   }
   .hero-bcp-title {
@@ -1193,9 +1193,9 @@ html, body {
 @media (max-width: 600px) {
   .hero-fullwidth-section {
     background-size: 70px auto;
-    background-position: right 28px top 120px;
-    padding: 8rem 0.2rem 2rem 0.2rem;
-    min-height: 50vh;
+    background-position: right 28px top 80px;
+    padding: 6rem 0.2rem 1.5rem 0.2rem;
+    min-height: 40vh;
     border-radius: 1.2rem;
     margin: 0.5rem 0 1.2rem 0;
     left: 0;
@@ -1243,6 +1243,12 @@ html, body {
 
 .hero-fullwidth-section + .autoai-card {
   margin-top: 3rem;
+}
+
+@media (max-width: 600px) {
+  .hero-fullwidth-section + .autoai-card {
+    margin-top: 1rem;
+  }
 }
 
 .fade-in-on-scroll {
@@ -1315,9 +1321,19 @@ html, body {
   z-index: 110;
   animation: slideInRight 0.5s cubic-bezier(.4,2,.6,1);
 }
+
+.autoai-mobile-nav.closing {
+  animation: slideOutRight 0.8s cubic-bezier(.4,2,.6,1);
+}
+
 @keyframes slideInRight {
   from { right: -100vw; opacity: 0; }
   to { right: 0; opacity: 1; }
+}
+
+@keyframes slideOutRight {
+  from { right: 0; opacity: 1; }
+  to { right: -100vw; opacity: 0; }
 }
 .autoai-mobile-nav .autoai-nav-btn,
 .autoai-mobile-nav .autoai-dropdown-item {
@@ -1367,20 +1383,60 @@ html, body {
   .autoai-comparison-table-wrapper {
     width: 100%;
     max-width: 100%;
-    overflow-x: auto;
+    overflow-x: visible;
     padding: 0;
     border-radius: 1.2rem;
     box-sizing: border-box;
   }
   .autoai-comparison-table {
-    font-size: 0.93rem;
-    min-width: 480px;
+    display: none;
+  }
+  .autoai-comparison-table-mobile {
+    display: block;
     width: 100%;
   }
-  .autoai-comparison-table th,
-  .autoai-comparison-table td {
-    padding: 0.5rem 0.5rem;
-    font-size: 0.93rem;
-    white-space: normal;
+  .autoai-comparison-mobile-card {
+    background: #232323;
+    border-radius: 1rem;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 16px 0 rgba(0,0,0,0.10);
+  }
+  .autoai-comparison-mobile-title {
+    color: var(--autoai-accent);
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    text-align: center;
+    filter: blur(4px);
+    user-select: none;
+  }
+  .autoai-comparison-mobile-feature {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid #333;
+  }
+  .autoai-comparison-mobile-feature:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+  }
+  .autoai-comparison-mobile-label {
+    color: #b6e0ff;
+    font-weight: 500;
+    font-size: 0.9rem;
+    flex: 1;
+  }
+  .autoai-comparison-mobile-value {
+    color: #fff;
+    font-size: 0.9rem;
+    flex: 2;
+    text-align: right;
+  }
+  .autoai-comparison-mobile-btn {
+    width: 100%;
+    margin-top: 1rem;
   }
 }
