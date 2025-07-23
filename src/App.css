@@ -1606,21 +1606,33 @@ html, body {
 @media (max-width: 768px) {
   .autoai-testimonials-container {
     min-height: 250px;
+    padding: 0 3rem;
+    position: relative;
   }
   
   .autoai-testimonial-nav {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    min-height: 40px;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
+    min-height: 50px;
+    background: var(--autoai-accent);
+    box-shadow: 0 4px 16px rgba(111,255,144,0.4);
+    border: 2px solid rgba(255,255,255,0.1);
+    font-size: 1.2rem;
+  }
+  
+  .autoai-testimonial-nav:hover {
+    background: #4be86e;
+    transform: translateY(-50%) scale(1.15);
+    box-shadow: 0 6px 20px rgba(111,255,144,0.5);
   }
   
   .autoai-testimonial-prev {
-    left: -20px;
+    left: 0;
   }
   
   .autoai-testimonial-next {
-    right: -20px;
+    right: 0;
   }
   
   .autoai-testimonial-content {
@@ -1676,6 +1688,30 @@ html, body {
     font-size: 1.3rem;
   }
 }
+
+@media (max-width: 480px) {
+  .autoai-testimonials-container {
+    padding: 0 2.5rem;
+  }
+  
+  .autoai-testimonial-nav {
+    width: 45px;
+    height: 45px;
+    min-width: 45px;
+    min-height: 45px;
+    font-size: 1.1rem;
+  }
+  
+  .autoai-testimonial-prev {
+    left: 0.5rem;
+  }
+  
+  .autoai-testimonial-next {
+    right: 0.5rem;
+  }
+}
+
+
 
 /* 404 Error Page */
 .autoai-404-card {

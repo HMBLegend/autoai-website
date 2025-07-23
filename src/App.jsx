@@ -694,6 +694,8 @@ function TermsOfService() {
   );
 }
 
+
+
 function PrivacyPolicy() {
   return (
     <section className="autoai-card autoai-legal-card">
