@@ -295,7 +295,110 @@ function Home() {
       </div>
       {/* Leadership/Team Section */}
       {/* Removed leadership/team section as requested */}
+      
+      {/* Testimonials Section */}
+      <TestimonialsCarousel />
     </>
+  );
+}
+
+function TestimonialsCarousel() {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const testimonials = [
+    {
+      name: "Sarah Johnson",
+      role: "General Manager",
+      company: "Premier Auto Group",
+      content: "AutoAI Consult transformed our dealership's lead management. We've seen a 40% increase in sales conversions and our team is more efficient than ever.",
+      rating: 5,
+      image: "/images/testimonial1.jpg"
+    },
+    {
+      name: "Mike Rodriguez",
+      role: "Sales Director", 
+      company: "Elite Motors",
+      content: "The AI solutions they recommended were perfect for our needs. Our customer follow-up process is now automated and our retention rates have improved dramatically.",
+      rating: 5,
+      image: "/images/testimonial2.jpg"
+    },
+    {
+      name: "Jennifer Chen",
+      role: "Owner",
+      company: "Chen Automotive",
+      content: "Working with AutoAI Consult was a game-changer. They helped us implement the right technology stack and our ROI was positive within 3 months.",
+      rating: 5,
+      image: "/images/testimonial3.jpg"
+    },
+    {
+      name: "David Thompson",
+      role: "Operations Manager",
+      company: "Thompson Dealerships",
+      content: "Their expertise in automotive AI is unmatched. They didn't just sell us software - they became our strategic partner in digital transformation.",
+      rating: 5,
+      image: "/images/testimonial4.jpg"
+    }
+  ];
+
+  const nextTestimonial = () => {
+    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+  };
+
+  const prevTestimonial = () => {
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const goToTestimonial = (index) => {
+    setCurrentIndex(index);
+  };
+
+  return (
+    <div className="autoai-card autoai-testimonials-card">
+      <h2 className="autoai-section-title fade-in-on-scroll">What Our Clients Say</h2>
+      <div className="autoai-testimonials-container">
+        <button className="autoai-testimonial-nav autoai-testimonial-prev" onClick={prevTestimonial}>
+          <FaChevronLeft />
+        </button>
+        
+        <div className="autoai-testimonial-content">
+          <div className="autoai-testimonial-quote">
+            <FaQuoteLeft className="autoai-quote-icon" />
+            <p className="autoai-testimonial-text">{testimonials[currentIndex].content}</p>
+          </div>
+          
+          <div className="autoai-testimonial-author">
+            <div className="autoai-testimonial-avatar">
+              <div className="autoai-avatar-placeholder">
+                {testimonials[currentIndex].name.split(' ').map(n => n[0]).join('')}
+              </div>
+            </div>
+            <div className="autoai-testimonial-info">
+              <h4 className="autoai-testimonial-name">{testimonials[currentIndex].name}</h4>
+              <p className="autoai-testimonial-role">{testimonials[currentIndex].role}</p>
+              <p className="autoai-testimonial-company">{testimonials[currentIndex].company}</p>
+              <div className="autoai-testimonial-rating">
+                {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
+                  <FaStar key={i} className="autoai-star" />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button className="autoai-testimonial-nav autoai-testimonial-next" onClick={nextTestimonial}>
+          <FaChevronRight />
+        </button>
+      </div>
+      
+      <div className="autoai-testimonial-dots">
+        {testimonials.map((_, index) => (
+          <button
+            key={index}
+            className={`autoai-testimonial-dot ${index === currentIndex ? 'active' : ''}`}
+            onClick={() => goToTestimonial(index)}
+          />
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -684,12 +787,76 @@ function App() {
               <Route path="/contact-us" element={<ContactUsSimple />} />
               <Route path="/terms" element={<TermsOfService />} />
               <Route path="/privacy" element={<PrivacyPolicy />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </FadeInManager>
         </main>
         <Footer />
+        <BackToTop />
       </div>
     </Router>
+  );
+}
+
+function BackToTop() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+
+    window.addEventListener('scroll', toggleVisibility);
+    return () => window.removeEventListener('scroll', toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  return (
+    <>
+      {isVisible && (
+        <button 
+          className="autoai-back-to-top"
+          onClick={scrollToTop}
+          aria-label="Back to top"
+        >
+          ↑
+        </button>
+      )}
+    </>
+  );
+}
+
+function NotFound() {
+  const navigate = useNavigate();
+  
+  return (
+    <section className="autoai-card autoai-404-card">
+      <div className="autoai-404-content">
+        <h1 className="autoai-404-title">404</h1>
+        <h2 className="autoai-404-subtitle">Page Not Found</h2>
+        <p className="autoai-404-text">
+          Oops! The page you're looking for doesn't exist. It might have been moved, deleted, or you entered the wrong URL.
+        </p>
+        <div className="autoai-404-actions">
+          <button className="autoai-contact-btn" onClick={() => navigate('/')}>
+            Go Home
+          </button>
+          <button className="autoai-contact-btn secondary-cta" onClick={() => navigate('/contact')}>
+            Book an Appointment
+          </button>
+        </div>
+      </div>
+    </section>
   );
 }
 
