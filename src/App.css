@@ -279,15 +279,28 @@ html, body {
     padding: 1.5rem 1rem;
     min-height: 60vh;
     margin: 0 auto;
+    justify-content: space-between;
   }
   .hero-content {
     align-items: flex-start;
     width: 100%;
+    order: 1;
+    flex: none;
+    display: flex;
+    flex-direction: column;
   }
   .hero-image {
-    margin-top: 2rem;
+    margin-top: 0;
     width: 100%;
     justify-content: center;
+    position: relative;
+    top: 0;
+    order: 2;
+    flex-shrink: 0;
+    height: auto;
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
   }
   .hero-logo-img {
     width: 100px;
@@ -302,16 +315,26 @@ html, body {
   }
 }
 @media (max-width: 600px) {
+  .hero-fullscreen-wrapper {
+    min-height: auto;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-top: 12rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 0;
+  }
   .upgraded-hero {
-    padding: 0.7rem 0.2rem 0.7rem 0.2rem;
+    padding: 2rem 1rem;
     border-radius: 1.2rem;
     margin: 0 auto;
-    min-height: 50vh;
-  }
-  .hero-fullscreen-wrapper {
-    min-height: 50vh;
-    padding-top: 0.7rem;
-    padding-bottom: 0.7rem;
+    margin-top: 1rem;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    background: red !important;
+    border: 5px solid yellow !important;
   }
   .upgraded-hero-title {
     font-size: 1.3rem;
@@ -334,6 +357,17 @@ html, body {
     align-items: center;
     text-align: center;
     width: 100%;
+  }
+  .hero-content {
+    margin-bottom: 0;
+  }
+  .hero-image {
+    position: relative;
+    top: 0;
+    margin-top: 0;
+    height: auto;
+    flex-shrink: 0;
+    padding: 1rem 0;
   }
 }
 
@@ -1086,13 +1120,13 @@ html, body {
   background: var(--autoai-dark);
   background-image: url('../images/1.png');
   background-repeat: no-repeat;
-  background-position: right 120px center;
+  background-position: right 120px top 120px;
   background-size: 380px auto;
-  padding: 150px 0 150px 120px;
+  padding: 120px 0 150px 120px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   border-radius: 2.2rem;
   overflow: hidden;
 }
@@ -1132,7 +1166,7 @@ html, body {
 @media (max-width: 1200px) {
   .hero-fullwidth-section {
     background-size: 260px auto;
-    background-position: right 60px center;
+    background-position: right 60px top 120px;
   }
   .hero-bcp-content {
     padding: 100px 0 100px 40px;
@@ -1141,7 +1175,7 @@ html, body {
 @media (max-width: 900px) {
   .hero-fullwidth-section {
     background-size: 120px auto;
-    background-position: right 20px center;
+    background-position: right 20px top 120px;
     padding-top: 96px;
   }
   .hero-bcp-content {
@@ -1159,9 +1193,9 @@ html, body {
 @media (max-width: 600px) {
   .hero-fullwidth-section {
     background-size: 70px auto;
-    background-position: right 28px top 80px;
-    padding: 4.2rem 0.2rem 1.2rem 0.2rem;
-    min-height: 40vh;
+    background-position: right 28px top 120px;
+    padding: 8rem 0.2rem 2rem 0.2rem;
+    min-height: 50vh;
     border-radius: 1.2rem;
     margin: 0.5rem 0 1.2rem 0;
     left: 0;
