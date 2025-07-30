@@ -61,11 +61,10 @@ function Header() {
             closeMobileMenu();
           }
         }}>
-          <img src={logo} alt="AutoAI Logo" className="autoai-logo" />
+          <img src="/images/3-final-cropped.svg" alt="AutoAI Consult" className="autoai-logo-svg" />
         </Link>
         {/* Desktop Nav */}
         <nav className="autoai-nav autoai-desktop-nav">
-          <Link to="/" className="autoai-nav-btn" onClick={closeDropdown}>Home</Link>
           <div
             className="autoai-nav-dropdown"
             onMouseEnter={handleDropdownEnter}
@@ -75,21 +74,20 @@ function Header() {
               className="autoai-nav-btn autoai-nav-dropdown-btn"
               aria-haspopup="true"
               aria-expanded={dropdownOpen}
-              aria-controls="resources-menu"
+              aria-controls="services-menu"
             >
-              Resources <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} />
+              Services <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} />
             </button>
             {dropdownOpen && (
-              <div className="autoai-dropdown-menu" id="resources-menu" role="menu">
+              <div className="autoai-dropdown-menu" id="services-menu" role="menu">
                 <Link to="/ai-strategy" className="autoai-dropdown-item" onClick={closeDropdown} role="menuitem">AI Strategy</Link>
                 <Link to="/data-strategy" className="autoai-dropdown-item" onClick={closeDropdown} role="menuitem">Data Strategy</Link>
                 <Link to="/comparison" className="autoai-dropdown-item" onClick={closeDropdown} role="menuitem">AI Comparison</Link>
               </div>
             )}
           </div>
-          <div style={{ flex: 1 }} />
-          <Link to="/contact" className="autoai-nav-btn" onClick={closeDropdown}>Book an Appointment</Link>
-          <Link to="/contact-us" className="autoai-nav-btn" onClick={closeDropdown} style={{ marginLeft: '1rem' }}>Contact Us</Link>
+          <Link to="/about" className="autoai-nav-btn" onClick={closeDropdown}>About Us</Link>
+          <Link to="/contact" className="autoai-nav-btn autoai-cta-btn" onClick={closeDropdown}>Get in Touch</Link>
         </nav>
         {/* Hamburger Icon for Mobile */}
         <button className="autoai-hamburger" onClick={() => {
@@ -104,17 +102,16 @@ function Header() {
         {/* Mobile Nav Drawer */}
         {(mobileMenuOpen || mobileMenuClosing) && (
           <nav className={`autoai-mobile-nav ${mobileMenuClosing ? 'closing' : ''}`}>
-            <Link to="/" className="autoai-nav-btn" onClick={closeMobileMenu}>Home</Link>
             <div className="autoai-mobile-dropdown">
-              <span className="autoai-nav-btn">Resources <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} /></span>
+              <span className="autoai-nav-btn">Services <FaChevronDown style={{ marginLeft: 6, fontSize: '0.8em' }} /></span>
               <div className="autoai-mobile-dropdown-menu">
                 <Link to="/ai-strategy" className="autoai-dropdown-item" onClick={closeMobileMenu}>AI Strategy</Link>
                 <Link to="/data-strategy" className="autoai-dropdown-item" onClick={closeMobileMenu}>Data Strategy</Link>
                 <Link to="/comparison" className="autoai-dropdown-item" onClick={closeMobileMenu}>AI Comparison</Link>
               </div>
             </div>
-            <Link to="/contact" className="autoai-nav-btn" onClick={closeMobileMenu}>Book an Appointment</Link>
-            <Link to="/contact-us" className="autoai-nav-btn" onClick={closeMobileMenu}>Contact Us</Link>
+            <Link to="/about" className="autoai-nav-btn" onClick={closeMobileMenu}>About Us</Link>
+            <Link to="/contact" className="autoai-nav-btn autoai-cta-btn" onClick={closeMobileMenu}>Get in Touch</Link>
           </nav>
         )}
       </div>
@@ -258,9 +255,9 @@ function Home() {
       {/* Hero Section */}
       <section className="hero-fullwidth-section">
         <div className="hero-bcp-content">
-          <h1 className="hero-bcp-title fade-in-on-scroll">AI Insights. Human Intuition.<br/>Meet Your Growth Engine.</h1>
-          <p className="hero-bcp-subtitle fade-in-on-scroll">AutoAI Consult combines smart humans and AI-enabled technology to help dealers respond quickly and carefully. By any means—text, chat, email, or phone—even when you’re asleep.</p>
-          <div className="hero-bcp-cta-row fade-in-on-scroll">
+          <h1 className="hero-bcp-title">AI Insights. Human Intuition.<br/>Meet Your Growth Engine.</h1>
+          <p className="hero-bcp-subtitle">AutoAI Consult combines smart humans and AI-enabled technology to help dealers respond quickly and carefully. By any means—text, chat, email, or phone—even when you’re asleep.</p>
+          <div className="hero-bcp-cta-row">
             <button className="autoai-hero-btn" onClick={() => setShowQuiz(true)}>
               Start Your AI Assessment
             </button>
@@ -546,6 +543,25 @@ function AIStrategy() {
   );
 }
 
+function AboutUs() {
+  return (
+    <>
+      {/* Simple About Us with Image */}
+      <section className="autoai-card autoai-simple-about">
+        <h1 className="autoai-title fade-in-on-scroll">About Us</h1>
+        <div className="autoai-about-image-container fade-in-on-scroll">
+          <img src="/images/1.svg" alt="About AutoAI Consult" className="autoai-about-image" />
+        </div>
+        <p className="autoai-about-text fade-in-on-scroll">
+          We are AutoAI Consult - your trusted partner in navigating the AI revolution in automotive retail. 
+          Our team combines deep industry expertise with cutting-edge technology to help dealerships 
+          transform their operations and drive growth.
+        </p>
+      </section>
+    </>
+  );
+}
+
 function DataStrategy() {
   const navigate = useNavigate();
   return (
@@ -610,7 +626,6 @@ function AIComparison() {
   return (
     <section className="autoai-card autoai-comparison-card">
       <h1 className="autoai-title fade-in-on-scroll">AI Solution Comparison</h1>
-      <p className="autoai-subtitle fade-in-on-scroll">Compare leading automotive AI platforms to find the best fit for your dealership.</p>
       <div className="autoai-comparison-table-wrapper">
         <table className="autoai-comparison-table">
           <thead>
@@ -642,37 +657,7 @@ function AIComparison() {
             })}
           </tbody>
         </table>
-        
-        {/* Mobile-friendly comparison cards */}
-        <div className="autoai-comparison-table-mobile">
-          {solutions.map((s, i) => {
-            const randomWords = [
-              'Nebula', 'Quantum', 'Nimbus', 'Vertex', 'Pulse',
-              'Zenith', 'Echo', 'Nova', 'Spectra', 'Flux'
-            ];
-            const randomName = randomWords[i % randomWords.length];
-            return (
-              <div key={s.name} className="autoai-comparison-mobile-card fade-in-on-scroll">
-                <div className="autoai-comparison-mobile-title">{randomName}</div>
-                <div className="autoai-comparison-mobile-feature">
-                  <div className="autoai-comparison-mobile-label">Key Features:</div>
-                  <div className="autoai-comparison-mobile-value">{s.features}</div>
-                </div>
-                <div className="autoai-comparison-mobile-feature">
-                  <div className="autoai-comparison-mobile-label">Integrations:</div>
-                  <div className="autoai-comparison-mobile-value">{s.integrations}</div>
-                </div>
-                <div className="autoai-comparison-mobile-feature">
-                  <div className="autoai-comparison-mobile-label">Best For:</div>
-                  <div className="autoai-comparison-mobile-value">{s.bestFor}</div>
-                </div>
-                <button className="autoai-contact-btn autoai-compare-btn autoai-comparison-mobile-btn" onClick={() => navigate('/contact')}>
-                  Request Info
-                </button>
-              </div>
-            );
-          })}
-        </div>
+
       </div>
     </section>
   );
@@ -783,6 +768,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/contact" element={<ContactUs />} />
+              <Route path="/about" element={<AboutUs />} />
               <Route path="/ai-strategy" element={<AIStrategy />} />
               <Route path="/data-strategy" element={<DataStrategy />} />
               <Route path="/comparison" element={<AIComparison />} />
