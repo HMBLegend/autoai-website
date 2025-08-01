@@ -28,7 +28,7 @@ html, body {
 .autoai-logo-link {
   display: flex;
   align-items: center;
-  margin-left: -7rem;
+  margin-left: -5rem;
   height: 128px;
 }
 :root {
@@ -617,6 +617,19 @@ html, body {
 }
 
 @media (max-width: 600px) {
+  .autoai-logo-link {
+    margin-left: 1rem; /* Move logo to the right on mobile */
+  }
+  
+  .autoai-nav {
+    margin-right: 0; /* Reset nav position for mobile */
+  }
+  
+  .autoai-hamburger {
+    margin-left: -2rem; /* Move hamburger even further to the left on mobile */
+    margin-right: auto; /* Push hamburger to the left */
+  }
+  
   .autoai-container {
     margin: 2.5rem auto 0 auto;
     padding: 0.2rem 0.2rem 1.5rem 0.2rem;
@@ -1401,6 +1414,8 @@ html, body {
   }
   .autoai-hamburger {
     display: block;
+    margin-left: -2rem; /* Move hamburger to the left on mobile */
+    margin-right: auto;
   }
 }
 @media (min-width: 701px) {

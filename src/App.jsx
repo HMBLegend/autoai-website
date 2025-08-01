@@ -657,7 +657,37 @@ function AIComparison() {
             })}
           </tbody>
         </table>
-
+        
+        {/* Mobile version */}
+        <div className="autoai-comparison-table-mobile">
+          {solutions.map((s, i) => {
+            const randomWords = [
+              'Nebula', 'Quantum', 'Nimbus', 'Vertex', 'Pulse',
+              'Zenith', 'Echo', 'Nova', 'Spectra', 'Flux'
+            ];
+            const randomName = randomWords[i % randomWords.length];
+            return (
+              <div key={s.name} className="autoai-comparison-mobile-card">
+                <div className="autoai-comparison-mobile-title">{randomName}</div>
+                <div className="autoai-comparison-mobile-feature">
+                  <div className="autoai-comparison-mobile-label">Key Features:</div>
+                  <div className="autoai-comparison-mobile-value">{s.features}</div>
+                </div>
+                <div className="autoai-comparison-mobile-feature">
+                  <div className="autoai-comparison-mobile-label">Integrations:</div>
+                  <div className="autoai-comparison-mobile-value">{s.integrations}</div>
+                </div>
+                <div className="autoai-comparison-mobile-feature">
+                  <div className="autoai-comparison-mobile-label">Best For:</div>
+                  <div className="autoai-comparison-mobile-value">{s.bestFor}</div>
+                </div>
+                <button className="autoai-contact-btn autoai-comparison-mobile-btn" onClick={() => navigate('/contact')}>
+                  Request Info
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </section>
   );
