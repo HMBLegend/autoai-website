@@ -292,112 +292,11 @@ function Home() {
       </div>
       {/* Leadership/Team Section */}
       {/* Removed leadership/team section as requested */}
-      
-      {/* Testimonials Section */}
-      <TestimonialsCarousel />
     </>
   );
 }
 
-function TestimonialsCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const testimonials = [
-    {
-      name: "Sarah Johnson",
-      role: "General Manager",
-      company: "Premier Auto Group",
-      content: "AutoAI Consult transformed our dealership's lead management. We've seen a 40% increase in sales conversions and our team is more efficient than ever.",
-      rating: 5,
-      image: "/images/testimonial1.jpg"
-    },
-    {
-      name: "Mike Rodriguez",
-      role: "Sales Director", 
-      company: "Elite Motors",
-      content: "The AI solutions they recommended were perfect for our needs. Our customer follow-up process is now automated and our retention rates have improved dramatically.",
-      rating: 5,
-      image: "/images/testimonial2.jpg"
-    },
-    {
-      name: "Jennifer Chen",
-      role: "Owner",
-      company: "Chen Automotive",
-      content: "Working with AutoAI Consult was a game-changer. They helped us implement the right technology stack and our ROI was positive within 3 months.",
-      rating: 5,
-      image: "/images/testimonial3.jpg"
-    },
-    {
-      name: "David Thompson",
-      role: "Operations Manager",
-      company: "Thompson Dealerships",
-      content: "Their expertise in automotive AI is unmatched. They didn't just sell us software - they became our strategic partner in digital transformation.",
-      rating: 5,
-      image: "/images/testimonial4.jpg"
-    }
-  ];
 
-  const nextTestimonial = () => {
-    setCurrentIndex((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevTestimonial = () => {
-    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
-
-  const goToTestimonial = (index) => {
-    setCurrentIndex(index);
-  };
-
-  return (
-    <div className="autoai-card autoai-testimonials-card">
-      <h2 className="autoai-section-title fade-in-on-scroll">What Our Clients Say</h2>
-      <div className="autoai-testimonials-container">
-        <button className="autoai-testimonial-nav autoai-testimonial-prev" onClick={prevTestimonial}>
-          <FaChevronLeft />
-        </button>
-        
-        <div className="autoai-testimonial-content">
-          <div className="autoai-testimonial-quote">
-            <FaQuoteLeft className="autoai-quote-icon" />
-            <p className="autoai-testimonial-text">{testimonials[currentIndex].content}</p>
-          </div>
-          
-          <div className="autoai-testimonial-author">
-            <div className="autoai-testimonial-avatar">
-              <div className="autoai-avatar-placeholder">
-                {testimonials[currentIndex].name.split(' ').map(n => n[0]).join('')}
-              </div>
-            </div>
-            <div className="autoai-testimonial-info">
-              <h4 className="autoai-testimonial-name">{testimonials[currentIndex].name}</h4>
-              <p className="autoai-testimonial-role">{testimonials[currentIndex].role}</p>
-              <p className="autoai-testimonial-company">{testimonials[currentIndex].company}</p>
-              <div className="autoai-testimonial-rating">
-                {[...Array(testimonials[currentIndex].rating)].map((_, i) => (
-                  <FaStar key={i} className="autoai-star" />
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <button className="autoai-testimonial-nav autoai-testimonial-next" onClick={nextTestimonial}>
-          <FaChevronRight />
-        </button>
-      </div>
-      
-      <div className="autoai-testimonial-dots">
-        {testimonials.map((_, index) => (
-          <button
-            key={index}
-            className={`autoai-testimonial-dot ${index === currentIndex ? 'active' : ''}`}
-            onClick={() => goToTestimonial(index)}
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function ContactUs() {
   const [form, setForm] = useState({
@@ -626,6 +525,9 @@ function AIComparison() {
   return (
     <section className="autoai-card autoai-comparison-card">
       <h1 className="autoai-title fade-in-on-scroll">AI Solution Comparison</h1>
+      <p className="autoai-comparison-subtext fade-in-on-scroll" style={{marginTop: '1.2rem', marginBottom: '0.5rem', color: '#fff', fontSize: '1.35rem', textAlign: 'center', fontWeight: 500}}>
+        Compare key features, integrations, and best use cases for leading automotive AI solutions.
+      </p>
       <div className="autoai-comparison-table-wrapper">
         <table className="autoai-comparison-table">
           <thead>
@@ -657,8 +559,7 @@ function AIComparison() {
             })}
           </tbody>
         </table>
-        
-        {/* Mobile version */}
+        {/* Mobile version: visible only on mobile via CSS */}
         <div className="autoai-comparison-table-mobile">
           {solutions.map((s, i) => {
             const randomWords = [
@@ -688,6 +589,7 @@ function AIComparison() {
             );
           })}
         </div>
+        
       </div>
     </section>
   );
