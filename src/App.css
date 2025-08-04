@@ -1880,3 +1880,17 @@ html, body {
     font-size: 1.1rem;
   }
 }
+
+/* Force hide mobile cards on desktop */
+.autoai-comparison-table-mobile {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+  .autoai-comparison-table-mobile {
+    display: block !important;
+  }
+  .autoai-comparison-table {
+    display: none !important;
+  }
+}
